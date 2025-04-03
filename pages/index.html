@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChocolateLand</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../aseets/style.css">
+<link 
+  rel="stylesheet" 
+  href="https://unpkg.com/swiper/swiper-bundle.min.css" 
+/>
+</head>
+
+<body>
+    <div class="wrapper">
+        <header class="header">
+<div class="container">
+    <div class="header__cont">
+<div class="header__logo">
+<a href="../pages/index.html" class="header__logo">
+    <img src="/foto/the.png" class="header__img" alt="logo">
+</a></div>
+<nav class="header__nav">
+<ul class="header_list">
+<li class="header_item">
+    <a href="../pages/about.html" class="header_link" data-i18n="about">Про Нас</a>
+</li>
+<li class="header_item">
+    <a href="../pages/kontakt.html" class="header_link">Контакти</a>
+</li>
+<li class="header_item">
+    <a href="../pages/Delivery.html" class="header_link">Доставка та оплата</a>
+</li>
+</ul>
+</nav>
+
+<div id="contents" class="btn">
+<p data-i18n="hello"></p>
+<p data-i18n="welcome"></p>
+
+<button id="change-en">En</button>
+<button id="change-cs">Čs</button>
+<button id="change-uk">Uk</button>
+</div>
+</div></div>
+<section class="header_content">
+    <div class="container header__container">
+        <div class="header__cont">
+    <div class="catalog">
+<button class="catalog__btn">Каталог</button>
+<ul class="catalog__menu">
+    <li class="catalog__item"><a class="catalog__link"  href="../pages/categoryPages/karamel.html">Карамель</a></li>
+    <li class="catalog__item"><a class="catalog__link" href="#">Збери сам</a></li>
+    <li class="catalog__item"><a class="catalog__link" href="#">Цукерки</a></li>
+    <li class="catalog__item"><a  class="catalog__link" href="../pages/categoryPages/chocolate.htm">Шоколадні плитки</a></li>
+</ul>
+    </div>
+
+<div class="surce">
+    <div class="container surce__container">
+<div class="surce__content">
+<input class="search-input" id="search" type="text" onkeyup="filterMenu()" placeholder="Пошук...">
+
+<button id="searchBtn" type="submit" class="search-btn">Пошук</button>
+<div id="results" class="search-results"></div>
+</div>
+    </div>
+
+</div>
+
+<button id="cart-btn" class="cart-button">
+    🛒 <span id="cart-count">0</span>
+</button>
+
+<!-- Модальне вікно кошика -->
+<div id="cart-modal" class="cart-modal">
+    <div class="cart-content">
+        <span class="close-cart">&times;</span> <!-- Кнопка для закриття -->
+        <h2>Ваш кошик</h2>
+        <ul id="cart-items">
+            <!-- Товари з кошика будуть тут -->
+        </ul>
+        <p>Загальна сума: <span id="total-price">0</span> Kč</p>
+        <p>Кількість товарів: <span id="cart-count-modal">0</span></p> <!-- Для коректного відображення -->
+        <button class="checkout-btn">Оформити замовлення</button>
+        <button class="exit-btn">Вийти</button> <!-- Кнопка виходу -->
+    </div>
+</div>
+
+
+
+</div></div>
+</section>
+        </header>
+        <main>
+            <section class="hero">
+<div class="container hero__container">
+<div class="hero__content">
+
+</div>
+</div>
+
+            </section>
+            <section class="swiper-news">
+                <div class="container swiper__container swipers">
+                  <div class="swiper-wrapper ">
+                    <div class="swiper-slide ">
+                        <a href="#">
+                      <img src="../foto/ukrainian-ornament-with-flowers-round-folk-ukrainian-embroidery-ukrainian-flag-colors_139525-73.avif" alt="slide 1"></a>
+                    </div>
+                    <div class="swiper-slide">
+                        <a href="#">
+                      <img src="../foto/photo_2024-05-08_15-23-50.jpg" alt="slide 2"></a>
+                    </div>
+                    <div class="swiper-slide">
+                        <a href="#">
+                      <img src="../foto/ukrainian-ornament-with-flowers-round-folk-ukrainian-embroidery-ukrainian-flag-colors_139525-73.avif" alt="slide 3"></a>
+                    </div>
+                    <div class="swiper-slide">
+                        <a href="#">
+                      <img src="../foto/46635.002.png" alt="slide 4"></a>
+                    </div>
+                  </div>
+              
+                  <!-- Навігація -->
+                  <div class="swiper-button-next buts"></div>
+                  <div class="swiper-button-prev buts"></div>
+              
+                  <!-- Пагінація -->
+                  <div class="swiper-pagination"></div>
+                </div>
+              </section>
+            <section class="about">
+<div class="container about__container">
+<div class="about__content">
+<h2 class=" title about__title">Про нас</h2>
+<p class="about__text">Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+    Quisquam recusandae temporibus incidunt ipsam. Voluptatum ipsam expedita accusamus nisi ducimus debitis voluptatibus qui aperiam, modi veritatis odit laboriosam,
+     eveniet porro laborum culpa, aliquid sit consectetur ab vitae eum iste.
+     Id repellendus deleniti nam quae animi ipsam mollitia facere itaque debitis natus!</p>
+</div>
+</div>
+            </section>
+            <section class="new">
+                <div class="container new__container">
+<h2 class="title new__title">Новинки</h2>
+<ul class="new__list">
+    <li class="new__item first">
+        <a href="#" class="new__link">
+            <img  class="list-foto" src="../foto/ukrainian-ornament-with-flowers-round-folk-ukrainian-embroidery-ukrainian-flag-colors_139525-73.avif" alt="foto1">
+        </a>
+<h3 class="new-title">Заголовок фото</h3>
+<a  class ="services-more" href="#">Learn more</a>
+</li>
+<li class="new__item second">
+    <a href="#" class="new__link">
+        <img class="list-foto" src="../foto/46635.002.png" alt="foto1">
+    </a>
+<h3 class="new-title">Заголовок фото</h3>
+<a  class ="services-more" href="#">Learn more</a>
+</li>
+<li class="new__item third">
+    <a href="#" class="new__link">
+        <img  class="list-foto" src="../foto/photo_2024-05-08_15-23-50.jpg" alt="foto1">
+    </a>
+<h3 class="new-title">Заголовок фото</h3>
+<a  class ="services-more" href="#">Learn more</a>
+</li>
+</ul>
+                </div>
+
+            </section>
+        </main>
+        <footer class="footer">
+<div class="container footer-container">
+
+    <div class="footer__logo">
+        <a href="../pages/index.html" class="footer__logo">
+            <img src="/foto/the.png" class="footer__img" alt="logo">
+        </a></div>
+        <div class="footer_content">
+            <ul class="footer_list">
+                <li class="footer_item">
+                    <a href="../pages/about.html" class="footer_link">Про Нас</a>
+                </li>
+                <li class="footer_item">
+                    <a href="../pages/kontakt.html" class="footer_link">Контакти</a>
+                </li>
+                <li class="footer_item">
+                    <a href="../pages/Delivery.html" class="footer_link">Доставка та оплата</a>
+                </li>
+                </ul>
+        </div>
+        <div class="footer-naw">
+            <ul class="footer_list naw-list">
+                <li class="footer_item naw-item">
+                    <a href="https://www.instagram.com/chocolateland28?igsh=dmVwMm1jajRpZjA4" class="footer_link instagram"></a>
+                </li>
+                <li class="footer_item">
+                    <a href="https://www.tiktok.com/@chocolateland28?is_from_webapp=1&sender_device=pc" class="footer_link tiktok"></a>
+                </li>
+                </ul>
+        </div>
+
+</div>
+        </footer>
+    </div>
+    <script src="https://unpkg.com/i18next@21.6.0/dist/umd/i18next.min.js"></script>
+    <script src="../aseets/js/i118.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="../aseets/js/swiper.js"></script>
+    <script src="../aseets/js/index.js"></script>
+</body>
+
+
+</html>

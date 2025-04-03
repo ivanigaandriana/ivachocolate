@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slana karamel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../aseets/style.css">
+<link 
+  rel="stylesheet" 
+  href="https://unpkg.com/swiper/swiper-bundle.min.css" 
+/>
+</head>
+
+<body>
+    <div class="wrapper">
+        <header class="header">
+<div class="container">
+    <div class="header__cont">
+<div class="header__logo">
+<a href="../pages/index.html" class="header__logo">
+    <img src="/foto/the.png" class="header__img" alt="logo">
+</a></div>
+<nav class="header__nav">
+<ul class="header_list">
+<li class="header_item">
+    <a href="../pages/about.html" class="header_link" data-i18n="about">Про Нас</a>
+</li>
+<li class="header_item">
+    <a href="../pages/kontakt.html" class="header_link">Контакти</a>
+</li>
+<li class="header_item">
+    <a href="../pages/Delivery.html" class="header_link">Доставка та оплата</a>
+</li>
+</ul>
+</nav>
+
+<div id="contents" class="btn">
+<p data-i18n="hello"></p>
+<p data-i18n="welcome"></p>
+
+<button id="change-en">En</button>
+<button id="change-cs">Čs</button>
+<button id="change-uk">Uk</button>
+</div>
+</div></div>
+<section class="header_content">
+    <div class="container header__container">
+        <div class="header__cont">
+    <div class="catalog">
+<button class="catalog__btn">Каталог</button>
+<ul class="catalog__menu">
+    <li class="catalog__item"><a class="catalog__link" href="../categoryPages/karamel.html">Карамель</a></li>
+    <li class="catalog__item"><a class="catalog__link"href="#">Збери сам</a></li>
+    <li class="catalog__item"><a class="catalog__link" href="#">Цукерки</a></li>
+    <li class="catalog__item"><a  class="catalog__link"href="#">Шоколадні плитки</a></li>
+</ul>
+    </div>
+
+<div class="surce">
+    <div class="container surce__container">
+<div class="surce__content">
+<input class="search-input" id="search" type="text" onkeyup="filterMenu()" placeholder="Пошук...">
+
+<button id="searchBtn" type="submit" class="search-btn">Пошук</button>
+<div id="results" class="search-results"></div>
+</div>
+    </div>
+
+</div>
+<button id="cart-btn" class="cart-button">
+    🛒 <span id="cart-count">0</span>
+</button>
+
+<!-- Модальне вікно кошика -->
+<div id="cart-modal" class="cart-modal">
+    <div class="cart-content">
+        <span class="close-cart">&times;</span> <!-- Кнопка для закриття -->
+        <h2>Ваш кошик</h2>
+        <ul id="cart-items">
+            <!-- Товари з кошика будуть тут -->
+        </ul>
+        <p>Загальна сума: <span id="total-price">0</span> Kč</p>
+        <p>Кількість товарів: <span id="cart-count-modal">0</span></p> <!-- Для коректного відображення -->
+        <button class="checkout-btn">Оформити замовлення</button>
+        <button class="exit-btn">Вийти</button> <!-- Кнопка виходу -->
+    </div>
+</div></div></div>
+</section>
+        </header>
+        <main  >
+            <section class="saltkaramel">
+               <div class="container saltkaramel__container">
+<div class="saltkaramel__content">
+<div class="saltkaramel__img">
+<img  class="saltkaramel__foto" src="../foto/photo_2024-05-08_15-23-50.jpg" width="370px" alt="">
+</div>
+<div class="saltkaramel__box">
+    <h2 class="saltkaramel__title">Slana karamel</h2>
+    <p class="saltkaramel__text"><span class="black">Slaný karamel</span> - pouze z kvalitních surovin, vyrobený pro vás s láskou. Je to prostě něco neuvěřitelně chutného. 
+        Kombinace sladkého karamelu s himálajskou solí, po jejíž ochutnání vaše chuťové pohárky doslova explodují!
+        Lze použít jako krém na dortíky, palačinky nebo si ho jednoduše vychutnat lžičkou.</p>
+        <p class="saltkaramel__text"><span class="black">Složení</span> : cukr, smetana, máslo, himálajská sůl.</p>
+        <p class="saltkaramel__text"><span class="black">Doba skladování </span> až 3 měsíce na chladném místě nebo v lednici. Po otevření spotřebujte do 1 týdne.</p>
+        <p class="saltkaramel__text"><span class="black">Hmotnost </span>: 320-330 gramů.</p>
+        <p><span class="saltkaramel__price">100 Kč</span></p>
+
+        <div class="quantity">
+<button class="minus">-</button>
+<input type="text" name="quantity-input" class="quantity-input" value="1">
+<button class="plus">+</button>
+        </div>
+        <button class="add-to-cart" data-name="Slana karamel" data-price="100">Додати в кошик</button>
+
+
+</div>
+</div>
+               </div>
+
+            </section>
+        </main>
+        <footer class="footer">
+<div class="container footer-container">
+
+    <div class="footer__logo">
+        <a href="../pages/index.html" class="footer__logo">
+            <img src="/foto/the.png" class="footer__img" alt="logo">
+        </a></div>
+        <div class="footer_content">
+            <ul class="footer_list">
+                <li class="footer_item">
+                    <a href="../pages/about.html" class="footer_link">Про Нас</a>
+                </li>
+                <li class="footer_item">
+                    <a href="../pages/kontakt.html" class="footer_link">Контакти</a>
+                </li>
+                <li class="footer_item">
+                    <a href="../pages/Delivery.html" class="footer_link">Доставка та оплата</a>
+                </li>
+                </ul>
+        </div>
+        <div class="footer-naw">
+            <ul class="footer_list naw-list">
+                <li class="footer_item naw-item">
+                    <a href="https://www.instagram.com/chocolateland28?igsh=dmVwMm1jajRpZjA4" class="footer_link instagram"></a>
+                </li>
+                <li class="footer_item">
+                    <a href="https://www.tiktok.com/@chocolateland28?is_from_webapp=1&sender_device=pc" class="footer_link tiktok"></a>
+                </li>
+                </ul>
+        </div>
+
+</div>
+        </footer>
+    </div>
+    <script src="https://unpkg.com/i18next@21.6.0/dist/umd/i18next.min.js"></script>
+    <script src="../aseets/js/i118.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="../aseets/js/swiper.js"></script>
+    <script src="../aseets/js/index.js"></script>
+</body>
+
+
+</html>
