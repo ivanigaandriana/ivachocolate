@@ -1,0 +1,194 @@
+{
+  "karamel": [
+    {
+      "name": "карамель солона",
+      "price": 100,
+      "image": "/foto/photo_2024-05-08_15-23-50.jpg",
+      "link": "./pages/productDetails.html",
+      "description": "Солона карамель з нотками морської солі, що дарує неповторний смак.",
+      "ingredients": "Цукор, сіль, масло, ваніль.",
+      "storage": "Термін зберігання 12 місяців.",
+      "weight": "250 г",
+      "additional_images": [
+        "/foto/photo_2024-05-08_15-23-51.jpg",
+        "/foto/photo_2024-05-08_15-23-52.jpg"
+      ]
+    },
+    {
+      "name": "карамель з малиною",
+      "price": 100,
+      "image": "/foto/photo_2024-05-08_15-23-50.jpg",
+      "link": "./pages/productDetails.html",
+      "description": "Солона карамель з нотками морської солі, що дарує неповторний смак.",
+      "ingredients": "Цукор, сіль, масло, ваніль.",
+      "storage": "Термін зберігання 12 місяців.",
+      "weight": "250 г",
+      "additional_images": [
+        "/foto/photo_2024-05-08_15-23-51.jpg",
+        "/foto/photo_2024-05-08_15-23-52.jpg"
+      ]
+    },
+    {
+      "name": "карамель з фісташкою",
+      "price": 100,
+      "image": "/foto/photo_2024-05-08_15-23-50.jpg",
+      "link": "./pages/productDetails.html",
+      "description": "Солона карамель з нотками морської солі, що дарує неповторний смак.",
+      "ingredients": "Цукор, сіль, масло, ваніль.",
+      "storage": "Термін зберігання 12 місяців.",
+      "weight": "250 г",
+      "additional_images": [
+        "/foto/photo_2024-05-08_15-23-51.jpg",
+        "/foto/photo_2024-05-08_15-23-52.jpg"
+      ]
+    },
+    {
+      "name": "карамель з кокосом та шоколадом",
+      "price": 90,
+      "image": "/foto/photo_2024-05-08_15-23-50.jpg",
+      "link": "./pages/productDetails.html?product=vanilla-caramel",
+      "description": "Ніжна ванільна карамель, яка тане в роті.",
+      "ingredients": "Цукор, ваніль, масло.",
+      "storage": "Термін зберігання 12 місяців.",
+      "weight": "250 г",
+      "additional_images": [
+        "/foto/photo_2024-05-08_15-23-53.jpg",
+        "/foto/photo_2024-05-08_15-23-54.jpg"
+      ]
+    },
+    {
+      "name": "карамель з шоколадом",
+      "price": 100,
+      "image": "/foto/photo_2024-05-08_15-23-50.jpg",
+      "link": "./pages/productDetails.html",
+      "description": "Солона карамель з нотками морської солі, що дарує неповторний смак.",
+      "ingredients": "Цукор, сіль, масло, ваніль.",
+      "storage": "Термін зберігання 12 місяців.",
+      "weight": "250 г",
+      "additional_images": [
+        "/foto/photo_2024-05-08_15-23-51.jpg",
+        "/foto/photo_2024-05-08_15-23-52.jpg"
+      ]
+    },
+    {
+      "name": "карамель з маракуєю",
+      "price": 100,
+      "image": "/foto/photo_2024-05-08_15-23-50.jpg",
+      "link": "./pages/productDetails.html",
+      "description": "Солона карамель з нотками морської солі, що дарує неповторний смак.",
+      "ingredients": "Цукор, сіль, масло, ваніль.",
+      "storage": "Термін зберігання 12 місяців.",
+      "weight": "250 г",
+      "additional_images": [
+        "/foto/photo_2024-05-08_15-23-51.jpg",
+        "/foto/photo_2024-05-08_15-23-52.jpg"
+      ]
+    }
+  ],
+  "chocolate": [
+    {
+      "name": "dark chocolate",
+      "price": 150,
+      "image": "/foto/лого2.png",
+      "link": "./pages/productDetails.html",
+      "description": "Інтенсивний темний шоколад для справжніх гурманів.",
+      "ingredients": "Какао-боби, цукор, масло.",
+      "storage": "Термін зберігання 24 місяці.",
+      "weight": "100 г",
+      "additional_images": [
+        "/foto/лого2.png",
+        "/foto/цукерки1.jpg"
+      ]
+    }
+  ],
+  "candies": [
+    {
+      "name": "lemon candies",
+      "price": 80,
+      "image": "/foto/цукерки1.jpg",
+      "link": "./pages/productDetails.html",
+      "description": "Соковиті лимонні цукерки з освіжаючим смаком.",
+      "ingredients": "Цукор, лимонний сік, глюкоза.",
+      "storage": "Термін зберігання 6 місяців.",
+      "weight": "150 г",
+      "additional_images": [
+        "/foto/photo_2024-05-08_15-23-57.jpg",
+        "/foto/photo_2024-05-08_15-23-58.jpg"
+      ]
+    },
+    {
+      "name": "strawberry candies",
+      "price": 250,
+      "image": "/foto/photo_2024-05-08_15-23-50.jpg",
+      "link": "./pages/productDetails.html",
+      "description": "Солодкі цукерки з фруктовим ароматом.",
+      "ingredients": "Цукор, глюкоза, фруктові екстракти.",
+      "storage": "Термін зберігання 12 місяців.",
+      "weight": "200 г",
+      "additional_images": [
+        "/foto/photo_2024-05-08_15-23-59.jpg",
+        "/foto/photo_2024-05-08_15-24-00.jpg"
+      ]
+    },
+    {
+    "name": "rouzen candies",
+    "price": 300,
+    "image": "/foto/photo_2024-05-08_15-23-50.jpg",
+    "link": "./pages/productDetails.html",
+    "description": "Солодкі цукерки з фруктовим ароматом.",
+    "ingredients": "Цукор, глюкоза, фруктові екстракти.",
+    "storage": "Термін зберігання 12 місяців.",
+    "weight": "200 г",
+    "additional_images": [
+      "/foto/photo_2024-05-08_15-23-59.jpg",
+      "/foto/photo_2024-05-08_15-24-00.jpg"
+    ]
+  },
+    {
+    "name": "цукерка",
+    "price": 300,
+    "image": "/foto/photo_2024-05-08_15-23-50.jpg",
+    "link": "./pages/productDetails.html",
+    "description": "Солодкі цукерки з фруктовим ароматом.",
+    "ingredients": "Цукор, глюкоза, фруктові екстракти.",
+    "storage": "Термін зберігання 12 місяців.",
+    "weight": "200 г",
+    "additional_images": [
+      "/foto/photo_2024-05-08_15-23-59.jpg",
+      "/foto/photo_2024-05-08_15-24-00.jpg"
+    ]
+  }
+  ],
+  "boxes":[
+    {
+      "name":"Маленька коробка",
+      "price":50,
+      "image":"/foto/лого2.png",
+      "capacity":3
+    },
+    {
+      "name":"Середня коробка",
+      "price":70,
+      "image":"/foto/лого2.png",
+      "capacity":5
+    },
+    {
+      "name":"Велика коробка",
+      "price":100,
+      "image":"/foto/лого2.png",
+      "capacity":8
+    }
+  ],
+  "cards": [
+    {
+      "name": "Листівка класична",
+      "price": 20,
+      "image": "/foto/лого2.png"
+    },
+    {
+      "name": "Листівка святкова",
+      "price": 25,
+      "image": "/foto/лого2.png"
+    }
+  ]
+}

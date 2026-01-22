@@ -1,5 +1,16 @@
 {
   "dependencies": {
-    "i18next": "^24.2.2"
-  }
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "i18next": "^24.2.2",
+    "mongoose": "^8.13.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  },
+  "scripts": {
+  "start": "node server.js",  
+  "dev": "nodemon server.js"  
+}
 }

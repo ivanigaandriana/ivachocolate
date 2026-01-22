@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Збери свій бокс</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/aseets/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+</head>
+<body>
+<div class="wrapper assemble-wrapper">
+    <header id="header-placeholder"></header>
+
+    <main>
+      <section class="categories" data-category="assemble">
+        <div class="container product__container">
+          <h1 class="category-title">Збери свій бокс</h1>
+          
+          <!-- Прогрес бар -->
+     <!-- Прогрес бар - НОВИЙ ПОРЯДОК -->
+<div class="assemble-progress">
+    <div class="progress-step active" data-step="1">1. Коробка</div>
+    <div class="progress-step" data-step="2">2. Листівка</div>
+    <div class="progress-step" data-step="3">3. Товари</div>
+</div>
+
+<!-- 1️⃣ Вибір коробки (залишається першим) -->
+<div class="assemble-section" id="section-box">
+    <h2>1️⃣ Оберіть коробку</h2>
+    <p class="section-subtitle">Коробка визначає розмір та кількість товарів</p>
+    <ul id="boxes-list" class="product-list"></ul>
+    <div class="selected-box-info" id="box-counter">Коробка не обрана</div>
+</div>
+
+<!-- 2️⃣ Вибір листівки (ДРУГИМ кроком) -->
+<div class="assemble-section" id="section-card" style="display: none;">
+    <h2>2️⃣ Оберіть листівку</h2>
+    <p class="section-subtitle">Додайте листівку до вашого подарунку (необов'язково)</p>
+    
+    <!-- Кнопка пропуску -->
+    <div class="skip-card-section">
+        <button id="skip-card-btn" class="skip-card-btn">
+            ⏩ Пропустити листівку
+        </button>
+        <p class="skip-hint">Можна повернутися та обрати пізніше</p>
+    </div>
+    
+    <ul id="cards-list" class="product-list"></ul>
+</div>
+
+<!-- 3️⃣ Вибір товарів (ТРЕТІМ кроком) -->
+<div class="assemble-section" id="section-products" style="display: none;">
+    <div class="section-header">
+        <h2>3️⃣ Додайте товари</h2>
+        <div class="capacity-counter">
+            Місць у коробці: <span id="used-slots">0</span>/<span id="total-slots">0</span>
+            <span id="capacity-warning" style="color: #ff4757; margin-left: 10px; display: none;">
+                ⚠️ Перевищено на <span id="exceeded-count">0</span>
+            </span>
+        </div>
+    </div>
+    <p class="section-subtitle">Оберіть товари для вашого боксу</p>
+    
+    <!-- Фільтри по категоріям -->
+    <div class="category-filters">
+        <button class="filter-btn active" data-category="all">Всі</button>
+        <button class="filter-btn" data-category="karamel">Карамель</button>
+        <button class="filter-btn" data-category="chocolate">Шоколад</button>
+        <button class="filter-btn" data-category="candies">Цукерки</button>
+    </div>
+    
+    <!-- Кнопка зміни коробки або листівки -->
+    <div class="change-container">
+        <button id="change-box-btn" class="change-btn" style="display: none;">
+            ✏️ Змінити коробку
+        </button>
+        <button id="change-card-btn" class="change-btn" style="display: none;">
+            💌 Змінити листівку
+        </button>
+    </div>
+    
+    <ul id="products-list" class="product-list"></ul>
+</div>
+
+
+          <!-- Підсумок боксу -->
+          <div class="box-summary">
+            <h2>📦 Ваш бокс</h2>
+            <div class="summary-content">
+              <div class="summary-items-container">
+                <h3>Склад боксу:</h3>
+                <div class="summary-items" id="selected-items">
+                  <!-- Тут будуть обрані товари -->
+                  <div class="empty-summary">Бокс порожній</div>
+                </div>
+              </div>
+              <div class="summary-total">
+                <div class="total-price">
+                  Загальна ціна: <span id="total-price">0</span> грн
+                </div>
+                <div class="capacity-info" id="capacity-info">
+                  <!-- Тут буде інформація про місткість -->
+                </div>
+                <button id="add-to-cart" data-type="custom_box" class="add-to-cart" type="button" >
+                  🛒 Додати бокс у кошик
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Навігаційні кнопки -->
+          <div class="assemble-navigation">
+            <button id="prev-step" class="nav-btn" style="display: none;">← Назад</button>
+            <button id="next-step" class="nav-btn" disabled>Далі →</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer id="footer-placeholder"></footer>
+</div>
+
+<!-- Модальне вікно для деталей товару -->
+<div id="product-modal" class="product-modal" style="display:none;">
+    <div id="modal-body"></div>
+    <span id="modal-close" class="close-modal">&times;</span>
+</div>
+
+<script src="https://unpkg.com/i18next@21.6.0/dist/umd/i18next.min.js"></script>
+<script src="/aseets/js/i118.js"></script>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script src="/aseets/js/swiper.js"></script>
+<script src="/aseets/js/index.js"></script>
+<script src="/aseets/js/footerHeader.js"></script>
+<!-- Видаляємо products.js для цієї сторінки -->
+<script src="/aseets/js/assemble.js"></script>
+
+</body>
+</html>
