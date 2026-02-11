@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../aseets/style.css">
+<link rel="stylesheet" href="../assets/style.css">
 <link 
   rel="stylesheet" 
   href="https://unpkg.com/swiper/swiper-bundle.min.css" 
@@ -24,11 +24,11 @@
 <ul class="kontakt-list">
     <li class="kontakt-item">
     <p class="text-black">Telefonní číslo</p>
-<p class="kontakt__text">Lorem ipsum dolor sit amet consectetur adipisicing elit.
+<p class="kontakt__text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
 </li>
 <li class="kontakt-item">
     <p class="text-black">Email</p>
-<p class="kontakt__text">Lorem ipsum dolor sit amet consectetur adipisicing elit.
+<p class="kontakt__text">ivachocolate.store@seznam.cz</p>
 </li>
 </ul>
 </div>
@@ -38,233 +38,11 @@
     </div>
     <script src="https://unpkg.com/i18next@21.6.0/dist/umd/i18next.min.js"></script>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-    <script src="../aseets/js/swiper.js"></script>
-    <script src="../aseets/js/index.js"></script>
-    <script src="../aseets/js/i118.js"></script>
-    <script src="../aseets/js/footerHeader.js"></script>
+    <script src="../assets/js/swiper.js"></script>
+    <script src="../assets/js/index.js"></script>
+    <script src="../assets/js/i18.js"></script>
+    <script src="../assets/js/footerHeader.js"></script>
 </body>
 
 
 </html>
-<!-- function initSmartSearch() {
-    fetch("/data/product.json")
-        .then(res => res.json())
-        .then(data => {
-            const searchInput = document.getElementById("search");
-            const searchButton = document.getElementById("searchBtn");
-            const resultsDiv = document.getElementById("results");
-
-            searchButton.addEventListener("click", () => {
-                const query = searchInput.value.trim().toLowerCase();
-                if (!query) {
-                    resultsDiv.innerHTML = "<p>Введіть запит для пошуку.</p>";
-                    return;
-                }
-
-                let found = false;
-                const isInCategory = window.location.pathname.includes("/categoryPages/");
-                const buildLink = cat =>
-                    isInCategory
-                        ? `../categoryPages/${cat}.html`
-                        : `./categoryPages/${cat}.html`;
-
-                for (const category in data) {
-                    if (category.toLowerCase().includes(query)) {
-                        window.location.href = buildLink(category);
-                        return;
-                    }
-                }
-
-                for (const category in data) {
-                    for (const product of data[category]) {
-                        if (
-                            product.name.toLowerCase().includes(query) ||
-                            product.description?.toLowerCase().includes(query)
-                        ) {
-                            window.location.href = buildLink(category);
-                            return;
-                        }
-                    }
-                }
-
-                resultsDiv.innerHTML = "<p>Нічого не знайдено.</p>";
-            });
-        })
-        .catch(err => console.error("❌ Search error:", err));
-}
-
-/* =========================
-   CATALOG
-========================= */
-function loadCatalog() {
-    const btn = document.querySelector(".catalog__btn");
-    const menu = document.querySelector(".catalog__menu");
-
-    if (!btn || !menu) return;
-
-    btn.addEventListener("click", e => {
-        e.stopPropagation();
-        menu.style.display = menu.style.display === "block" ? "none" : "block";
-    });
-
-    document.addEventListener("click", e => {
-        if (!menu.contains(e.target) && !btn.contains(e.target)) {
-            menu.style.display = "none";
-        }
-    });
-}
-
-/* =========================
-   CART
-========================= */
-function initCart() {
-    const cartBtn = document.getElementById("cart-btn");
-    const cartModal = document.getElementById("cart-modal");
-    const cartItems = document.getElementById("cart-items");
-    const totalPrice = document.getElementById("total-price");
-    const cartCount = document.getElementById("cart-count");
-    const cartCountModal = document.getElementById("cart-count-modal");
-
-    // ✅ ЄДИНИЙ STATE
-    window.cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-    // 🧹 чистка
-    window.cart = window.cart.filter(item => item && item.name && !isNaN(item.price));
-    saveCart();
-
-    updateCart();
-
-    cartBtn?.addEventListener("click", () => {
-        cartModal.style.display = "flex";
-    });
-
-    cartModal?.addEventListener("click", e => {
-        if (e.target === cartModal) cartModal.style.display = "none";
-    });
-
-    document.addEventListener("click", e => {
-        /* REMOVE */
-        if (e.target.classList.contains("remove-item")) {
-            const index = +e.target.dataset.index;
-            window.cart.splice(index, 1);
-            saveCart();
-            updateCart();
-        }
-
-        /* ADD TO CART */
-        if (e.target.classList.contains("add-to-cart")) {
-            e.preventDefault();
-
-            /* CUSTOM BOX */
-            if (e.target.dataset.type === "custom_box") {
-                if (!window.assembleState?.selectedBox) {
-                    console.warn("❌ Бокс не обрано");
-                    return;
-                }
-
-                const box = {
-                    type: "custom_box",
-                    name: `🎁 БОКС: ${assembleState.selectedBox.name}`,
-                    quantity: 1,
-                    price: Number(calculateTotalPrice()) || 0,
-                    image: assembleState.selectedBox.image || "/foto/logo2.png",
-                    box: assembleState.selectedBox,
-                    products: assembleState.selectedProducts || [],
-                    card: assembleState.selectedCard || null
-                };
-
-                window.cart.push(box);
-                saveCart();
-                updateCart();
-                return;
-            }
-
-            /* REGULAR PRODUCT */
-            const name = e.target.dataset.name;
-            const price = Number(e.target.dataset.price) || 0;
-            const image = e.target.dataset.image || "/foto/logo2.png";
-
-            const exist = window.cart.find(i => i.name === name);
-            if (exist) exist.quantity++;
-            else window.cart.push({ name, price, image, quantity: 1 });
-
-            saveCart();
-            updateCart();
-        }
-    });
-
-    /* UPDATE CART UI */
-    function updateCart() {
-        cartItems.innerHTML = "";
-        let total = 0;
-        let count = 0;
-
-        if (!window.cart.length) {
-            cartItems.innerHTML = "<p>🛒 Кошик порожній</p>";
-        }
-
-        window.cart.forEach((item, index) => {
-            const li = document.createElement("li");
-            li.innerHTML =
-                item.type === "custom_box"
-                    ? renderCustomBoxItemSafe(item, index)
-                    : renderRegularItemSafe(item, index);
-            cartItems.appendChild(li);
-
-            total += (item.price || 0) * (item.quantity || 1);
-            count += item.quantity || 1;
-        });
-
-        totalPrice.textContent = total + " грн";
-        cartCount.textContent = count;
-        cartCountModal.textContent = count;
-    }
-
-    window.updateCart = updateCart;
-    window.saveCart = saveCart;
-}
-
-/* =========================
-   SAVE
-========================= */
-function saveCart() {
-    localStorage.setItem("cart", JSON.stringify(window.cart));
-    console.log("💾 cart:", window.cart);
-}
-
-/* =========================
-   RENDER HELPERS
-========================= */
-function renderRegularItemSafe(item, index) {
-    return `
-      <div class="cart-item">
-        <img src="${item.image}">
-        <strong>${item.name}</strong> x${item.quantity}
-        <span>${item.price * item.quantity} грн</span>
-        <button class="remove-item" data-index="${index}">✕</button>
-      </div>
-    `;
-}
-
-function renderCustomBoxItemSafe(item, index) {
-    return `
-      <div class="cart-box">
-        <img src="${item.image}">
-        <div>
-          <strong>${item.name}</strong>
-          <div>${item.price} грн</div>
-        </div>
-        <button class="remove-item" data-index="${index}">✕</button>
-      </div>
-    `;
-}
-
-/* =========================
-   INIT ONCE
-========================= */
-if (!window.__cartInitialized) {
-    window.__cartInitialized = true;
-    initCart();
-    initSmartSearch();
-    loadCatalog();
-} -->

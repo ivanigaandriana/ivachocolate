@@ -1,3 +1,20 @@
+# dependencies
 node_modules/
+
+# env
 .env
+
+# logs
 *.log
+
+# generated data (ВАЖЛИВО)
+backend/data/
+backend/invoices/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# build
+dist/
+build/

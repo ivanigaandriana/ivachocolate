@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Адмінка замовлень</title>
+  <link rel="stylesheet" href="./admin.css">
+</head>
+<body>
+  <header>
+    <h1>🍫 Адмінка Івашого шоколаду</h1>
+  </header>
+
+  <main>
+    <div class="filters">
+  <label>
+    Статус:
+    <select id="statusFilter">
+      <option value="all">Всі</option>
+      <option value="new">Нові</option>
+      <option value="processing">В обробці</option>
+      <option value="completed">Виконано</option>
+    </select>
+  </label>
+
+  <label>
+    Сортувати за:
+    <select id="sortFilter">
+      <option value="date_desc">Дата (новіші спочатку)</option>
+      <option value="date_asc">Дата (старіші спочатку)</option>
+      <option value="total_desc">Сума (від більшої)</option>
+      <option value="total_asc">Сума (від меншої)</option>
+    </select>
+  </label>
+<label>
+  Пошук:
+  <input type="text" id="searchInput" placeholder="ID або ім'я клієнта">
+</label>
+  <button class="btn-cancel" id="applyFilters">Застосувати</button>
+</div>
+    <table id="ordersTable">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Клієнт</th>
+          <th>Сума</th>
+          <th>Статус</th>
+          <th>Дії</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Замовлення заповнюються через JS -->
+      </tbody>
+    </table>
+  </main>
+
+  <!-- Модальне вікно деталей замовлення -->
+  <div id="orderModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Деталі замовлення</h2>
+      <div id="orderDetails"></div>
+    </div>
+  </div>
+<button id="logoutBtn">Вийти</button>
+<script>
+  document.getElementById('logoutBtn').onclick = async () => {
+    await fetch('/admin/logout');
+    window.location.href = '/admin/login.html';
+  };
+</script>
+  <script src="./admin.js"></script>
+</body>
+</html>

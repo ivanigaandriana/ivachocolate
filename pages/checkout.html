@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Оформлення замовлення</title>
-    <link rel="stylesheet" href="../aseets/style.css">
+    <link rel="stylesheet" href="../assets/style.css">
 </head>
 <body>
 <div class="wrapper">
@@ -21,33 +21,41 @@
 
                     <!-- Основні контактні дані -->
                     <label>Ім'я:
-                        <input type="text" name="firstName" required>
+                        <input type="text" name="firstName" id="customer-name" required>
                     </label>
                     <label>Прізвище:
-                        <input type="text" name="lastName" required>
+                        <input type="text" name="lastName"id="customer-lastname" required>
                     </label>
                     <label>Телефон:
-                        <input type="text" name="phone" required>
+                        <input type="text" name="phone" id="customer-phone" required>
                     </label>
                     <label>Email:
-                        <input type="email" name="email" required>
+                        <input type="email" name="email" id="customer-email" required>
                     </label>
 
                     <h3>Адреса доставки</h3>
                     <label>Країна:
-                        <input type="text" name="country" required>
+                         <select name="country" id="delivery-country" required>
+        <option value="">Оберіть країну</option>
+        <option value="Czechia">Czechia</option>
+        <option value="Slovakia">Slovakia</option>
+        <option value="Hungary">Hungary</option>
+    </select>
                     </label>
                     <label>Місто:
-                        <input type="text" name="city" required>
+                        <input type="text" name="city" id="customer-city" required>
                     </label>
                     <label>Вулиця:
-                        <input type="text" name="street" required>
+                        <input type="text" name="street"id="customer-street" required>
                     </label>
                     <label>Номер будинку:
-                        <input type="text" name="houseNumber" required>
+                        <input type="text" name="houseNumber"id="customer-house"  required>
                     </label>
+                    <label>Квартира:
+    <input type="text" name="apartment" id="customer-apartment">
+</label>
                     <label>Поштовий індекс:
-                        <input type="text" name="postalIndex" required>
+                        <input type="text" name="postalIndex"id="customer-postal" required>
                     </label>
 
                     <hr>
@@ -78,7 +86,7 @@
                         <label for="shipping-zasilkovna" class="shipping-option">
                             <input type="radio" name="delivery" id="shipping-zasilkovna" value="zasilkovna" required>
                             <span class="payment-info">
-                                <b class="shipping-billing-name">Zásilkovna — пункт видачі</b>
+                                <b class="shipping-billing-name">Zásilkovna </b>
                                 <span>
                                     <span class="show-tooltip question-tooltip"
                                         title="Доставка у будь-який пункт видачі Zásilkovna">?</span>
@@ -87,14 +95,21 @@
                             <span class="shipping-logo">
                                 <img src="/foto/лого засілковна.webp" alt="Zásilkovna logo">
                             </span>
-                            <strong class="payment-shipping-price" data-shipping-price="69">69 Kč</strong>
+                            <strong class="payment-shipping-price" data-shipping-price="89">89 Kč</strong>
                         </label>
+                               <div id="zasilkovna-point-wrapper" style="display:none; margin-top:8px;">
+    <button type="button" id="choose-branch-btn">
+        📍 Обрати пункт видачі
+    </button>
+
+    <div id="selected-branch" style="font-size:14px; margin-top:5px; color:green;"></div>
+</div>
 
                         <!-- Česká pošta -->
                         <label for="shipping-post" class="shipping-option">
                             <input type="radio" name="delivery" id="shipping-post" value="ceska_posta">
                             <span class="payment-info">
-                                <b class="shipping-billing-name">Česká pošta (3–5 днів)</b>
+                                <b class="shipping-billing-name">Česká pošta </b>
                                 <span>
                                     <span class="show-tooltip question-tooltip"
                                         title="Доставка через Česká pošta протягом 3–5 днів">?</span>
@@ -103,24 +118,24 @@
                             <span class="shipping-logo">
                                 <img src="/foto/лого чеська пошта.webp" alt="Česká pošta logo">
                             </span>
-                            <strong class="payment-shipping-price" data-shipping-price="89">89 Kč</strong>
+                            <strong class="payment-shipping-price" data-shipping-price="75">75 Kč</strong>
                         </label>
 
-                        <!-- DPD -->
-                        <label for="shipping-dpd" class="shipping-option">
-                            <input type="radio" name="delivery" id="shipping-dpd" value="dpd">
-                            <span class="payment-info">
-                                <b class="shipping-billing-name">DPD кур'єр</b>
-                                <span>
-                                    <span class="show-tooltip question-tooltip"
-                                        title="Кур'єрська доставка DPD">?</span>
-                                </span>
-                            </span>
-                            <span class="shipping-logo">
-                                <img src="/foto/лого дпд.png" width="40" height="40" alt="DPD logo">
-                            </span>
-                            <strong class="payment-shipping-price" data-shipping-price="119">119 Kč</strong>
-                        </label>
+                      <!-- Pošta Meest -->
+<!-- <label for="shipping-meest" class="shipping-option">
+    <input type="radio" name="delivery" id="shipping-meest" value="meest">
+    <span class="payment-info">
+        <b class="shipping-billing-name">Pošta Meest (міжнародна доставка)</b>
+        <span>
+            <span class="show-tooltip question-tooltip"
+                title="Міжнародна доставка поштою Meest. Ціна уточнюється після оформлення замовлення">?</span>
+        </span>
+    </span>
+    <span class="shipping-logo">
+        <img src="/foto/лого meest.webp" width="40" height="40" alt="Pošta Meest logo">
+    </span>
+    <strong class="payment-shipping-price" data-shipping-price="0">–</strong>
+</label> -->
                     </section>
 
                     <h3>Спосіб оплати</h3>
@@ -150,7 +165,7 @@
                     </label>
 
                     <label>Коментар:
-                        <textarea name="comment"></textarea>
+                        <textarea name="comment"id="order-notes"></textarea>
                     </label>
 
                     <!-- Чекбокс згоди -->
@@ -158,7 +173,7 @@
                         <input type="checkbox" id="privacy-consent" required>
                         <span>
                             Я погоджуюсь на обробку моїх персональних даних відповідно до
-                            <a href="/pages/privacy.html" target="_blank">політики конфіденційності</a>
+                            <a href="./privacy.html" target="_blank">політики конфіденційності</a>
                         </span>
                     </label>
 
@@ -181,9 +196,10 @@
     <footer id="footer-placeholder"></footer>
 </div>
 
-<script src="../aseets/js/checkout.js"></script>
-<script src="../aseets/js/footerHeader.js"></script>
-<script src="../aseets/js/index.js"></script>
+<script src="../assets/js/footerHeader.js"></script>
+<script src="../assets/js/index.js"></script>
+<script src="https://widget.packeta.com/v6/www/js/library.js"></script>
+<script src="../assets/js/checkout.js"></script>
 
 <!-- Модалка картки -->
 <div id="card-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; 

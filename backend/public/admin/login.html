@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<title>Логін Адмінки</title>
+</head>
+<body>
+  <h2>Логін</h2>
+  <form id="loginForm">
+    <input type="text" id="login" placeholder="Логін" required><br>
+    <input type="password" id="password" placeholder="Пароль" required><br>
+    <input type="text" id="secretKey" placeholder="Секретний ключ" required><br>
+    <button type="submit">Увійти</button>
+  </form>
+  <div id="message"></div>
+
+  <script>
+const form = document.getElementById('loginForm');
+const msg = document.getElementById('message');
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const login = document.getElementById('login').value;
+  const password = document.getElementById('password').value;
+  const secretKey = document.getElementById('secretKey').value;
+
+  const res = await fetch('/admin/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include', // сесія
+    body: JSON.stringify({ login, password, secretKey })
+  });
+
+  const data = await res.json();
+  if (data.success) {
+    window.location.href = '/admin/index.html'; // переходимо в адмінку
+  } else {
+    msg.innerText = data.message;
+  }
+});
+</script>
+</body>
+</html>

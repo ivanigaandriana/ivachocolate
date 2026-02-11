@@ -1,0 +1,26 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "i18next": "^24.2.2",
+    "mongoose": "^8.13.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11",
+    "nodemailer": "^7.0.12"
+  },
+  "nodemonConfig": {
+  "ignore": ["data/*"]
+}
+}

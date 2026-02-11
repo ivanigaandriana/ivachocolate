@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/aseets/style.css">
+  <link rel="stylesheet" href="/assets/style.css">
   <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 </head>
 <body>
@@ -26,6 +26,30 @@
     <div class="progress-step" data-step="2">2. Листівка</div>
     <div class="progress-step" data-step="3">3. Товари</div>
 </div>
+  <!-- Підсумок боксу -->
+          <div class="box-summary">
+            <h2>📦 Ваш бокс</h2>
+            <div class="summary-content">
+              <div class="summary-items-container">
+                <h3>Склад боксу:</h3>
+                <div class="summary-items" id="selected-items">
+                  <!-- Тут будуть обрані товари -->
+                  <div class="empty-summary">Бокс порожній</div>
+                </div>
+              </div>
+              <div class="summary-total">
+                <div class="total-price">
+                  Загальна ціна: <span id="total-price">0</span> грн
+                </div>
+                <div class="capacity-info" id="capacity-info">
+                  <!-- Тут буде інформація про місткість -->
+                </div>
+                <button id="add-to-cart" data-type="custom_box" class="add-to-cart" type="button" >
+                  🛒 Додати бокс у кошик
+                </button>
+              </div>
+            </div>
+          </div>
 
 <!-- 1️⃣ Вибір коробки (залишається першим) -->
 <div class="assemble-section" id="section-box">
@@ -70,6 +94,7 @@
         <button class="filter-btn" data-category="karamel">Карамель</button>
         <button class="filter-btn" data-category="chocolate">Шоколад</button>
         <button class="filter-btn" data-category="candies">Цукерки</button>
+        <button class="filter-btn" data-category="chocolate-dipped delights">Фрукти в шоколаді</button>
     </div>
     
     <!-- Кнопка зміни коробки або листівки -->
@@ -85,31 +110,6 @@
     <ul id="products-list" class="product-list"></ul>
 </div>
 
-
-          <!-- Підсумок боксу -->
-          <div class="box-summary">
-            <h2>📦 Ваш бокс</h2>
-            <div class="summary-content">
-              <div class="summary-items-container">
-                <h3>Склад боксу:</h3>
-                <div class="summary-items" id="selected-items">
-                  <!-- Тут будуть обрані товари -->
-                  <div class="empty-summary">Бокс порожній</div>
-                </div>
-              </div>
-              <div class="summary-total">
-                <div class="total-price">
-                  Загальна ціна: <span id="total-price">0</span> грн
-                </div>
-                <div class="capacity-info" id="capacity-info">
-                  <!-- Тут буде інформація про місткість -->
-                </div>
-                <button id="add-to-cart" data-type="custom_box" class="add-to-cart" type="button" >
-                  🛒 Додати бокс у кошик
-                </button>
-              </div>
-            </div>
-          </div>
 
           <!-- Навігаційні кнопки -->
           <div class="assemble-navigation">
@@ -130,13 +130,12 @@
 </div>
 
 <script src="https://unpkg.com/i18next@21.6.0/dist/umd/i18next.min.js"></script>
-<script src="/aseets/js/i118.js"></script>
+<script src="/assets/js/i118.js"></script>
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-<script src="/aseets/js/swiper.js"></script>
-<script src="/aseets/js/index.js"></script>
-<script src="/aseets/js/footerHeader.js"></script>
-<!-- Видаляємо products.js для цієї сторінки -->
-<script src="/aseets/js/assemble.js"></script>
+<script src="/assets/js/swiper.js"></script>
+<script src="/assets/js/index.js"></script>
+<script src="/assets/js/footerHeader.js"></script>
+<script src="/assets/js/assemble.js"></script>
 
 </body>
 </html>
