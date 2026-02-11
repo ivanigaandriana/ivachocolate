@@ -2,15 +2,7 @@ function loadHeaderFooter() {
     console.log('Завантаження header...');
     fetch('/pages/header.html')
       .then(res => res.text())
-      // .then(data => {
-      //   const headerContainer = document.getElementById("header-placeholder");
-      //   if (headerContainer) {
-      //     console.log('header вставлений');
-      //     headerContainer.innerHTML = data;
-      //     initCart(); // Тільки після того, як header вставлено в DOM
-      //     if (typeof updateTexts === "function") updateTexts(); // i18n, якщо потрібно
-      //   }
-      // });
+      
       .then(data => {
         const headerContainer = document.getElementById("header-placeholder");
         if (headerContainer) {
