@@ -1,6 +1,6 @@
 function loadHeaderFooter() {
     console.log('Завантаження header...');
-    fetch('/pages/header.html')
+    fetch('./pages/header.html')
       .then(res => res.text())
       
       .then(data => {
@@ -15,7 +15,7 @@ function loadHeaderFooter() {
       });
 
     console.log('Завантаження footer...');
-    fetch('/pages/footer.html')
+    fetch('./pages/footer.html')
       .then(res => res.text())
       .then(data => {
         const footerContainer = document.getElementById("footer-placeholder");
