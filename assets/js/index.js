@@ -1,10 +1,15 @@
 function initSmartSearch() {
-  fetch("../../data/product.json")
+  fetch("/data/product.json")
     .then(res => res.json())
     .then(data => {
       const searchInput = document.getElementById("search");
       const searchButton = document.getElementById("searchBtn");
       const resultsDiv = document.getElementById("results");
+       // 🔥 якщо елементів немає — просто виходимо
+      if (!searchInput || !searchButton || !resultsDiv) {
+        console.log("SmartSearch: елементи не знайдені на цій сторінці");
+        return;
+      }
 
       searchButton.addEventListener("click", () => {
         const query = searchInput.value.trim().toLowerCase();
@@ -134,7 +139,7 @@ function initCart() {
         return;
       }
       cartModal.style.display = "none";
-      window.location.href = "/pages/checkout.html";
+      window.location.href = "./pages/checkout.html";
     });
   }
 
