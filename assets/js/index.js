@@ -139,7 +139,7 @@ function initCart() {
         return;
       }
       cartModal.style.display = "none";
-      window.location.href = "./pages/checkout.html";
+      window.location.href = "/pages/checkout.html";
     });
   }
 
