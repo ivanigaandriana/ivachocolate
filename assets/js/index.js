@@ -1,5 +1,5 @@
 function initSmartSearch() {
-  fetch("./data/product.json")
+  fetch("/data/product.json")
     .then(res => res.json())
     .then(data => {
       const searchInput = document.getElementById("search");
@@ -134,7 +134,7 @@ function initCart() {
         return;
       }
       cartModal.style.display = "none";
-      window.location.href = "./pages/checkout.html";
+      window.location.href = "/pages/checkout.html";
     });
   }
 
