@@ -1,5 +1,5 @@
 function initSmartSearch() {
-  fetch("/data/product.json")
+  fetch("data/product.json")
     .then(res => res.json())
     .then(data => {
       const searchInput = document.getElementById("search");
