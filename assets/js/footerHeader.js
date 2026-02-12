@@ -1,37 +1,39 @@
 function loadHeaderFooter() {
-    console.log('Завантаження header...');
-    fetch('/pages/header.html')
-      .then(res => res.text())
-      
-      .then(data => {
-        const headerContainer = document.getElementById("header-placeholder");
-        if (headerContainer) {
-          console.log('header вставлений');
-          headerContainer.innerHTML = data;
-          initCart(); // Кошик
-          // initSearch(); // 🔍 Ініціалізація пошуку після вставки хедера
-          if (typeof updateTexts === "function") updateTexts(); // i18n
-        }
-      });
+    const repo = '/ivachocolate'; // обов’язково вказати назву репозиторію
 
-    console.log('Завантаження footer...');
-    fetch('/pages/footer.html')
-      .then(res => res.text())
-      .then(data => {
-        const footerContainer = document.getElementById("footer-placeholder");
-        if (footerContainer) {
-          console.log('footer вставлений');
-          footerContainer.innerHTML = data;
-        }
+    fetch(`${repo}/pages/header.html`)
+      .then(res => {
+          if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+          return res.text();
       })
+      .then(data => {
+          const headerContainer = document.getElementById("header-placeholder");
+          if (headerContainer) {
+              headerContainer.innerHTML = data;
+              initCart(); // якщо є
+              if (typeof updateTexts === "function") updateTexts(); // i18n
+          }
+      })
+      .catch(err => console.error('Помилка завантаження header:', err));
+
+    fetch(`${repo}/pages/footer.html`)
+      .then(res => {
+          if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+          return res.text();
+      })
+      .then(data => {
+          const footerContainer = document.getElementById("footer-placeholder");
+          if (footerContainer) {
+              footerContainer.innerHTML = data;
+          }
+      })
+      .catch(err => console.error('Помилка завантаження footer:', err))
       .finally(() => {
-          // Викликаємо функцію для ініціалізації каталогу після завантаження header та footer
-          loadCatalog();
+          loadCatalog(); // якщо потрібна ініціалізація каталогу
       });
 }
 
-// Підключаємо подію для завантаження header та footer після того, як DOM буде готовий
 document.addEventListener("DOMContentLoaded", function () {
     loadHeaderFooter();
-    initSmartSearch(); 
+    initSmartSearch(); // якщо потрібен пошук
 });
