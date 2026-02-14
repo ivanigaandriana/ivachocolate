@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     // Посилання на деталі продукту
                     const productLink = document.createElement("a");
-                    productLink.href = `../productDetails.html?product=${encodeURIComponent(product.name)}`; // ← ДОДАНО encodeURIComponent
+                    productLink.href = `${baseUrl}/pages/productDetails.html?product=${encodeURIComponent(product.name)}`; // ← ДОДАНО encodeURIComponent
                     productLink.textContent = "Детальніше";
                     productLink.classList.add("product-link");
 
