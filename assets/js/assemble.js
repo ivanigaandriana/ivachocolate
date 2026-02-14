@@ -231,87 +231,138 @@ window.assembleState = assembleState;
     // ========== ЗАВАНТАЖЕННЯ ДАНИХ ==========
 
     // Завантаження даних
-    async function loadData() {
-        try {
-            console.log('Завантаження даних...');
-            
-            // Спробуємо завантажити з різних шляхів
-            const paths = [
-                '/data/product.json',
-                '../data/product.json',
-                './data/product.json',
-                '/aseets/data/product.json'
-            ];
-            
-            let data = null;
-            
-            for (const path of paths) {
-                try {
-                    const response = await fetch(path);
-                    if (response.ok) {
-                        data = await response.json();
-                        console.log('Дані завантажено з:', path);
-                        break;
-                    }
-                } catch (e) {
-                    console.log('Не вдалося завантажити з:', path);
-                }
-            }
-            
-            if (!data) {
-                console.error('Не вдалося завантажити дані');
-                // Створюємо тестові дані
-                data = {
-                    boxes: [
-                        { name: "Small box", price: 50, image: "/aseets/foto/лого2.png", capacity: 3 },
-                        { name: "Medium box", price: 70, image: "/aseets/foto/лого2.png", capacity: 5 },
-                        { name: "Big box", price: 100, image: "/aseets/foto/лого2.png", capacity: 8 }
-                    ],
-                    cards: [
-                        { name: "Листівка класична", price: 20, image: "/aseets/foto/лого2.png" },
-                        { name: "Листівка святкова", price: 25, image: "/aseets/foto/лого2.png" }
-                    ],
-                    karamel: [],
-                    chocolate: [],
-                    candies: []
-                };
-            }
-            
-            // Обробляємо дані
-            assembleState.boxes = data.boxes || [];
-            assembleState.cards = data.cards || [];
-            
-            // Збираємо всі товари
-            const allProducts = [];
-            for (const category in data) {
-                if (category !== 'boxes' && category !== 'cards' && Array.isArray(data[category])) {
-                    data[category].forEach(product => {
-                        allProducts.push({
-                            ...product,
-                            category: category
-                        });
-                    });
-                }
-            }
-            
-            assembleState.availableProducts = allProducts;
-            console.log('Завантажено:', {
-                boxes: assembleState.boxes.length,
-                cards: assembleState.cards.length,
-                products: allProducts.length
-            });
-            
-            // Рендеримо
-            renderBoxes();
-            renderProducts();
-            renderCards();
-            updateCapacityInfo();
-            
-        } catch (error) {
-            console.error('Помилка завантаження даних:', error);
+   async function loadData() {
+    try {
+        console.log('Завантаження даних...');
+        
+        // ✅ ВИКОРИСТОВУЄМО CONFIG для отримання правильного шляху
+        let jsonUrl;
+        let baseUrl = '';
+        
+        if (window.appConfig) {
+            jsonUrl = window.appConfig.getJsonPath();
+            baseUrl = window.appConfig.baseUrl || '';
+            console.log('📦 appConfig знайдено, JSON шлях:', jsonUrl);
+        } else {
+            // Запасний варіант, якщо config не завантажився
+            baseUrl = window.location.hostname.includes('github.io') ? '/ivachocolate' : '';
+            jsonUrl = baseUrl + '/data/product.json';
+            console.log('⚠️ appConfig не знайдено, використовуємо:', jsonUrl);
         }
+        
+        // Спробуємо завантажити з різних шляхів (пріоритет - правильний шлях)
+        const paths = [
+            jsonUrl,                                      // правильний шлях з config
+            baseUrl + '/data/product.json',               // з baseUrl
+            '/data/product.json',                          // без baseUrl
+            '../data/product.json',
+            './data/product.json',
+            '/aseets/data/product.json'
+        ];
+        
+        let data = null;
+        
+        for (const path of paths) {
+            try {
+                console.log('Спроба завантажити з:', path);
+                const response = await fetch(path);
+                if (response.ok) {
+                    data = await response.json();
+                    console.log('✅ Дані завантажено з:', path);
+                    break;
+                }
+            } catch (e) {
+                console.log('❌ Не вдалося завантажити з:', path);
+            }
+        }
+        
+        if (!data) {
+            console.error('❌ Не вдалося завантажити дані');
+            // Створюємо тестові дані з правильними шляхами
+            data = {
+                boxes: [
+                    { name: "Small box", price: 50, image: baseUrl + "/foto/лого2.png", capacity: 3 },
+                    { name: "Medium box", price: 70, image: baseUrl + "/foto/лого2.png", capacity: 5 },
+                    { name: "Big box", price: 100, image: baseUrl + "/foto/лого2.png", capacity: 8 }
+                ],
+                cards: [
+                    { name: "Листівка класична", price: 20, image: baseUrl + "/foto/лого2.png" },
+                    { name: "Листівка святкова", price: 25, image: baseUrl + "/foto/лого2.png" }
+                ],
+                karamel: [],
+                chocolate: [],
+                candies: []
+            };
+        } else {
+            // ✅ Виправляємо шляхи до зображень у завантажених даних
+            function fixImagePath(imagePath) {
+                if (!imagePath) return baseUrl + '/foto/лого2.png';
+                if (imagePath.startsWith('http')) return imagePath;
+                
+                // Виправляємо помилку "aseets" на правильний шлях
+                let fixedPath = imagePath;
+                if (fixedPath.includes('aseets')) {
+                    fixedPath = fixedPath.replace('aseets', baseUrl + '/foto');
+                    console.log('🔄 Виправлено шлях:', imagePath, '→', fixedPath);
+                } else if (fixedPath.startsWith('/')) {
+                    fixedPath = baseUrl + fixedPath;
+                }
+                
+                return fixedPath;
+            }
+            
+            // Виправляємо шляхи в boxes
+            if (data.boxes) {
+                data.boxes = data.boxes.map(box => ({
+                    ...box,
+                    image: fixImagePath(box.image)
+                }));
+            }
+            
+            // Виправляємо шляхи в cards
+            if (data.cards) {
+                data.cards = data.cards.map(card => ({
+                    ...card,
+                    image: fixImagePath(card.image)
+                }));
+            }
+        }
+        
+        // Обробляємо дані
+        assembleState.boxes = data.boxes || [];
+        assembleState.cards = data.cards || [];
+        
+        // Збираємо всі товари
+        const allProducts = [];
+        for (const category in data) {
+            if (category !== 'boxes' && category !== 'cards' && Array.isArray(data[category])) {
+                data[category].forEach(product => {
+                    allProducts.push({
+                        ...product,
+                        category: category,
+                        image: fixImagePath ? fixImagePath(product.image) : product.image
+                    });
+                });
+            }
+        }
+        
+        assembleState.availableProducts = allProducts;
+        console.log('📊 Завантажено:', {
+            boxes: assembleState.boxes.length,
+            cards: assembleState.cards.length,
+            products: allProducts.length
+        });
+        
+        // Рендеримо
+        renderBoxes();
+        renderProducts();
+        renderCards();
+        updateCapacityInfo();
+        
+    } catch (error) {
+        console.error('❌ Помилка завантаження даних:', error);
     }
-
+}
     // ========== РЕНДЕР ФУНКЦІЇ ==========
 
     // Рендер коробок
