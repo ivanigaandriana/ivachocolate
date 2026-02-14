@@ -1,87 +1,65 @@
 function initSmartSearch() {
+  const jsonPath = window.appConfig.getHeaderFooterPath('data/product.json');
 
-  const base = getBasePath(); // беремо базовий шлях
-
-  fetch(`${base}/data/product.json`)
+  fetch(jsonPath)
     .then(res => res.json())
     .then(data => {
-
       const searchInput = document.getElementById("search");
       const searchButton = document.getElementById("searchBtn");
-      const resultsDiv = document.getElementById("results");
 
-      if (!searchInput || !searchButton || !resultsDiv) {
-        console.log("SmartSearch: елементи не знайдені на цій сторінці");
-        return;
-      }
-
-      const buildCategoryLink = (category) => {
-        return `${base}/pages/categoryPages/${category}.html`;
-      };
+      if (!searchInput || !searchButton) return;
 
       const performSearch = () => {
         const query = searchInput.value.trim().toLowerCase();
+        if (!query) return;
 
-        if (!query) {
-          resultsDiv.innerHTML = "<p>Введіть запит для пошуку.</p>";
-          return;
-        }
+        // Функція транслітерації
+        const transliterate = (text) => {
+          const map = {
+            'а':'a', 'б':'b', 'в':'v', 'г':'g', 'д':'d', 'е':'e', 'є':'ye', 'ж':'zh',
+            'з':'z', 'и':'y', 'і':'i', 'ї':'yi', 'й':'y', 'к':'k', 'л':'l', 'м':'m',
+            'н':'n', 'о':'o', 'п':'p', 'р':'r', 'с':'s', 'т':'t', 'у':'u', 'ф':'f',
+            'х':'kh', 'ц':'ts', 'ч':'ch', 'ш':'sh', 'щ':'shch', 'ю':'yu', 'я':'ya',
+            'a':'а', 'b':'б', 'c':'ц', 'd':'д', 'e':'е', 'f':'ф', 'g':'г', 'h':'х',
+            'i':'і', 'j':'й', 'k':'к', 'l':'л', 'm':'м', 'n':'н', 'o':'о', 'p':'п',
+            'q':'к', 'r':'р', 's':'с', 't':'т', 'u':'у', 'v':'в', 'w':'в', 'x':'кс',
+            'y':'и', 'z':'з'
+          };
+          return text.split('').map(char => map[char] || char).join('');
+        };
 
-        let found = false;
-
-        // 1️⃣ Пошук по категоріях
+        // Перевіряємо всі категорії
         for (const category in data) {
-          if (category.toLowerCase().includes(query)) {
-            window.location.href = buildCategoryLink(category);
-            found = true;
-            break;
-          }
-        }
-
-        // 2️⃣ Пошук по товарах
-        if (!found) {
-          for (const category in data) {
-            for (const product of data[category]) {
-
-              const name = product.name.toLowerCase();
-              const description = product.description?.toLowerCase() || "";
-
-              if (name.includes(query) || description.includes(query)) {
-                window.location.href = buildCategoryLink(category);
-                found = true;
-                break;
-              }
+          // Перевіряємо всі продукти в категорії
+          for (const product of data[category]) {
+            const productName = product.name.toLowerCase();
+            
+            // Проста перевірка - чи містить назва продукту наш запит
+            if (productName.includes(query)) {
+              console.log("Знайдено:", product.name);
+              window.location.href = window.appConfig.getHeaderFooterPath(`pages/categoryPages/${category}.html`);
+              return;
             }
-            if (found) break;
+            
+            // Перевірка з транслітерацією
+            if (transliterate(productName).includes(query)) {
+              console.log("Знайдено (трансліт):", product.name);
+              window.location.href = window.appConfig.getHeaderFooterPath(`pages/categoryPages/${category}.html`);
+              return;
+            }
           }
         }
 
-        // 3️⃣ Якщо нічого не знайдено
-        if (!found) {
-          resultsDiv.innerHTML = "<p>Нічого не знайдено. Спробуйте інший запит.</p>";
-        }
+        alert("Нічого не знайдено");
       };
 
-      // Клік по кнопці
       searchButton.addEventListener("click", performSearch);
-
-      // 🔥 Пошук по Enter
       searchInput.addEventListener("keypress", (e) => {
-        if (e.key === "Enter") {
-          performSearch();
-        }
+        if (e.key === "Enter") performSearch();
       });
-
     })
-    .catch(error => {
-      console.error("Помилка при завантаженні JSON:", error);
-      const resultsDiv = document.getElementById("results");
-      if (resultsDiv) {
-        resultsDiv.innerHTML = "<p>Не вдалося завантажити дані. Спробуйте пізніше.</p>";
-      }
-    });
+    .catch(error => console.error("Помилка:", error));
 }
-
 // ==========================
 // Каталог
 // ==========================
