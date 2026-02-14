@@ -1,224 +1,110 @@
-// ========== УНІВЕРСАЛЬНИЙ КОНФІГ ==========
-// Працює на: GitHub Pages, Render, локальному сервері
-// Автоматично визначає платформу і підставляє правильні шляхи
-
 (function() {
     window.appConfig = {
-        // Визначаємо платформу автоматично
+        // Автоматичне визначення платформи
         platform: (function() {
             const host = window.location.host;
-            const path = window.location.pathname;
-            
-            // GitHub Pages
-            if (host.includes('github.io')) {
-                console.log('✅ Платформа: GitHub Pages');
-                return 'github';
-            }
-            
-            // Render
-            if (host.includes('onrender.com')) {
-                console.log('✅ Платформа: Render');
-                return 'render';
-            }
-            
-            // Локальний сервер (localhost, 127.0.0.1)
-            if (host.includes('localhost') || host.includes('127.0.0.1')) {
-                console.log('✅ Платформа: Локальний сервер');
-                return 'local';
-            }
-            
-            // Інше (можливо, користувацький домен)
-            console.log('✅ Платформа: Інша (користувацький домен)');
+            if (host.includes('github.io')) return 'github';
+            if (host.includes('onrender.com')) return 'render';
+            if (host.includes('localhost') || host.includes('127.0.0.1')) return 'local';
             return 'other';
         })(),
-        
-        // Базовий URL для кожної платформи
+
+        // Базовий URL
         get baseUrl() {
-            switch(this.platform) {
-                case 'github':
-                    return '/ivachocolate';  // для GitHub Pages
-                case 'render':
-                case 'local':
-                case 'other':
-                default:
-                    return '';  // для Render та локального сервера
-            }
+            return this.platform === 'github' ? '/ivachocolate' : '';
         },
-        
-        // Головний метод для отримання правильного шляху
+
+        // Формування шляху до файлів
         getPath: function(relativePath) {
             const base = this.baseUrl;
-            
-            // Видаляємо всі ../ з початку (для файлів в підпапках)
-            let cleanPath = relativePath.replace(/^(\.\.\/)+/, '');
-            
-            // Для GitHub Pages додаємо /ivachocolate/
-            if (base) {
-                // Перевіряємо, чи шлях вже не містить baseUrl
-                if (!cleanPath.startsWith(base.replace('/', ''))) {
-                    return base + '/' + cleanPath;
-                }
-                return base + '/' + cleanPath;
-            }
-            
-            // Для Render та локального - повертаємо оригінальний шлях
-            return relativePath;
+            const cleanPath = relativePath.replace(/^(\.\.\/)+/, '');
+            return base ? base + '/' + cleanPath : relativePath;
         },
-        
-        // Для зображень та файлів (те саме що getPath)
-        getSrc: function(relativePath) {
-            return this.getPath(relativePath);
-        },
-        
-        // Для посилань на сторінки
-        getHref: function(relativePath) {
-            return this.getPath(relativePath);
-        },
-        
-        // Допоміжна функція для визначення поточної глибини папки
-        getDepth: function() {
-            const path = window.location.pathname;
-            // Видаляємо базовий шлях якщо є
-            let relativePath = path.replace(this.baseUrl, '');
-            // Рахуємо кількість слешів (рівнів вкладеності)
-            const depth = (relativePath.match(/\//g) || []).length;
-            return depth;
-        },
-        
-        // Функція для виправлення шляхів для footerHeader.js
+
+        // Шляхи для header/footer
         getHeaderFooterPath: function(relativePath) {
-            const depth = this.getDepth();
-            const base = this.baseUrl;
-            
-            if (base) {
-                // GitHub Pages
-                const cleanPath = relativePath.replace(/^(\.\.\/)+/, '');
-                return base + '/' + cleanPath;
-            } else {
-                // Render та локально - додаємо ../ відповідно до глибини
-                return '../'.repeat(depth) + relativePath;
-            }
+            const depth = (window.location.pathname.replace(this.baseUrl, '').match(/\//g) || []).length;
+            if (this.baseUrl) return this.baseUrl + '/' + relativePath.replace(/^(\.\.\/)+/, '');
+            return '../'.repeat(depth) + relativePath;
         },
-         getJsonPath: function() {
-            const depth = this.getDepth();
-            const base = this.baseUrl;
-            
-            if (base) {
-                return base + '/data/product.json';
-            } else {
-                return '../'.repeat(depth) + 'data/product.json';
-            }
+
+        // Шлях до JSON
+        getJsonPath: function() {
+            const depth = (window.location.pathname.replace(this.baseUrl, '').match(/\//g) || []).length;
+            return this.baseUrl ? this.baseUrl + '/data/product.json' : '../'.repeat(depth) + 'data/product.json';
         }
-    }
-    
-    
-    // Додаємо глобальну функцію для зручності
+    };
+
+    // Глобальні допоміжні функції
     window.$path = function(relativePath) {
         return window.appConfig.getPath(relativePath);
     };
-    
-    // Додаємо функцію для консолі (для відладки)
+
     window.$debug = function() {
-        console.log('🔧 Поточна платформа:', window.appConfig.platform);
+        console.log('🔧 Платформа:', window.appConfig.platform);
         console.log('🔧 Base URL:', window.appConfig.baseUrl);
-        console.log('🔧 Глибина вкладеності:', window.appConfig.getDepth());
-        console.log('🔧 Приклад шляху до фото:', window.$path('foto/лого.png'));
-        console.log('🔧 Приклад шляху для header:', window.appConfig.getHeaderFooterPath('pages/header.html'));
+        console.log('🔧 Приклад шляху до JSON:', window.appConfig.getJsonPath());
     };
-    
-    // ========== АВТОМАТИЧНЕ ВИПРАВЛЕННЯ ВСІХ ШЛЯХІВ ==========
+
+    // ======================= Функція виправлення всіх шляхів =======================
     function fixAllPaths() {
         const base = window.appConfig.baseUrl;
-        
-        // Якщо не GitHub Pages - нічого не міняємо
         if (!base) {
             console.log('📌 Локальний режим: шляхи не змінюємо');
             return;
         }
-        
+
         console.log('🔄 Виправляємо шляхи для GitHub Pages...');
-        
-        // 1. Виправляємо ВСІ посилання
+
+        // Виправляємо посилання
         document.querySelectorAll('a').forEach(link => {
             let href = link.getAttribute('href');
             if (!href) return;
-            
-            // Посилання на сторінки в папці pages
-            if (href.startsWith('pages/')) {
-                link.href = base + '/' + href;
-            }
-            // Посилання на головну
-            else if (href === 'index.html') {
-                link.href = base + '/index.html';
-            }
-            // Посилання з ../
-            else if (href.startsWith('../')) {
-                let cleanHref = href.replace(/^(\.\.\/)+/, '');
-                if (!cleanHref.startsWith('http')) {
-                    link.href = base + '/' + cleanHref;
-                }
-            }
-        });
-        
-        // 2. Виправляємо ВСІ зображення
-        document.querySelectorAll('img').forEach(img => {
-            let src = img.getAttribute('src');
-            if (!src) return;
-            
-            // Зображення в папці foto
-            if (src.startsWith('foto/')) {
-                img.src = base + '/' + src;
-            }
-            // Зображення з ../
-            else if (src.startsWith('../')) {
-                let cleanSrc = src.replace(/^(\.\.\/)+/, '');
-                img.src = base + '/' + cleanSrc;
-            }
-        });
-        
-        // 3. Виправляємо CSS файли
-        document.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
-            let href = link.getAttribute('href');
-            if (!href) return;
-            
-            if (href.startsWith('assets/') || href.startsWith('./assets/')) {
-                link.href = base + '/' + href.replace('./', '');
-            }
-            else if (href.startsWith('../')) {
-                let cleanHref = href.replace(/^(\.\.\/)+/, '');
+            if (href.startsWith('pages/') || href === 'index.html' || href.startsWith('../')) {
+                const cleanHref = href.replace(/^(\.\.\/)+/, '');
                 link.href = base + '/' + cleanHref;
             }
         });
-        
-        // 4. Виправляємо JavaScript файли
+
+        // Виправляємо зображення
+        document.querySelectorAll('img').forEach(img => {
+            let src = img.getAttribute('src');
+            if (!src) return;
+            if (src.startsWith('foto/') || src.startsWith('../')) {
+                const cleanSrc = src.replace(/^(\.\.\/)+/, '');
+                img.src = base + '/' + cleanSrc;
+            }
+        });
+
+        // Виправляємо CSS
+        document.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
+            let href = link.getAttribute('href');
+            if (!href) return;
+            if (href.startsWith('assets/') || href.startsWith('./assets/') || href.startsWith('../')) {
+                const cleanHref = href.replace(/^(\.\.\/)+/, '').replace('./', '');
+                link.href = base + '/' + cleanHref;
+            }
+        });
+
+        // Виправляємо JS
         document.querySelectorAll('script[src]').forEach(script => {
             let src = script.getAttribute('src');
             if (!src) return;
-            
-            if (src.startsWith('assets/') || src.startsWith('./assets/')) {
-                script.src = base + '/' + src.replace('./', '');
-            }
-            else if (src.startsWith('../')) {
-                let cleanSrc = src.replace(/^(\.\.\/)+/, '');
+            if (src.startsWith('assets/') || src.startsWith('./assets/') || src.startsWith('../')) {
+                const cleanSrc = src.replace(/^(\.\.\/)+/, '').replace('./', '');
                 script.src = base + '/' + cleanSrc;
             }
         });
-        
+
         console.log('✅ Всі шляхи виправлені!');
     }
-    
-    // Запускаємо виправлення після повного завантаження сторінки
+
+    // ======================= Запуск після завантаження сторінки =======================
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', fixAllPaths);
     } else {
-        // Якщо DOM вже завантажений
         fixAllPaths();
     }
-    
-    // Також запускаємо після повного завантаження (для динамічних елементів)
     window.addEventListener('load', fixAllPaths);
-    
-    // Автоматично виводимо інформацію в консоль при завантаженні
-    console.log('🚀 Config.js завантажено!');
-    window.$debug();
+    window.addEventListener('load', window.$debug);
 })();

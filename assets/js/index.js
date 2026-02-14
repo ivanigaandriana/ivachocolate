@@ -1,68 +1,52 @@
 function initSmartSearch() {
-const jsonPath = window.appConfig.baseUrl 
-    ? '/ivachocolate/data/product.json' 
-    : window.appConfig.getHeaderFooterPath('data/product.json');
+    const jsonPath = window.appConfig.getJsonPath();
+    console.log('📦 Завантаження JSON з:', jsonPath);
 
-  console.log('📦 Завантаження JSON з:', jsonPath);
+    fetch(jsonPath)
+        .then(res => {
+            if (!res.ok) throw new Error(`HTTP помилка! Статус: ${res.status}`);
+            return res.json();
+        })
+        .then(data => {
+            const searchInput = document.getElementById("search");
+            const searchButton = document.getElementById("searchBtn");
+            if (!searchInput || !searchButton) return;
 
-  fetch(jsonPath)
-    .then(res => res.json())
-    .then(data => {
-      const searchInput = document.getElementById("search");
-      const searchButton = document.getElementById("searchBtn");
+            const transliterate = (text) => {
+                const map = {
+                    'а':'a','б':'b','в':'v','г':'g','д':'d','е':'e','є':'ye','ж':'zh',
+                    'з':'z','и':'y','і':'i','ї':'yi','й':'y','к':'k','л':'l','м':'m',
+                    'н':'n','о':'o','п':'p','р':'r','с':'s','т':'t','у':'u','ф':'f',
+                    'х':'kh','ц':'ts','ч':'ch','ш':'sh','щ':'shch','ю':'yu','я':'ya',
+                    'a':'а','b':'б','c':'ц','d':'д','e':'е','f':'ф','g':'г','h':'х',
+                    'i':'і','j':'й','k':'к','l':'л','m':'м','n':'н','o':'о','p':'п',
+                    'q':'к','r':'р','s':'с','t':'т','u':'у','v':'в','w':'в','x':'кс',
+                    'y':'и','z':'з'
+                };
+                return text.split('').map(char => map[char] || char).join('');
+            };
 
-      if (!searchInput || !searchButton) return;
+            const performSearch = () => {
+                const query = searchInput.value.trim().toLowerCase();
+                if (!query) return;
 
-      const performSearch = () => {
-        const query = searchInput.value.trim().toLowerCase();
-        if (!query) return;
+                for (const category in data) {
+                    for (const product of data[category]) {
+                        const productName = product.name.toLowerCase();
+                        if (productName.includes(query) || transliterate(productName).includes(query)) {
+                            console.log("🔎 Знайдено:", product.name);
+                            window.location.href = window.appConfig.getHeaderFooterPath(`pages/categoryPages/${category}.html`);
+                            return;
+                        }
+                    }
+                }
+                alert("Нічого не знайдено");
+            };
 
-        // Функція транслітерації
-        const transliterate = (text) => {
-          const map = {
-            'а':'a', 'б':'b', 'в':'v', 'г':'g', 'д':'d', 'е':'e', 'є':'ye', 'ж':'zh',
-            'з':'z', 'и':'y', 'і':'i', 'ї':'yi', 'й':'y', 'к':'k', 'л':'l', 'м':'m',
-            'н':'n', 'о':'o', 'п':'p', 'р':'r', 'с':'s', 'т':'t', 'у':'u', 'ф':'f',
-            'х':'kh', 'ц':'ts', 'ч':'ch', 'ш':'sh', 'щ':'shch', 'ю':'yu', 'я':'ya',
-            'a':'а', 'b':'б', 'c':'ц', 'd':'д', 'e':'е', 'f':'ф', 'g':'г', 'h':'х',
-            'i':'і', 'j':'й', 'k':'к', 'l':'л', 'm':'м', 'n':'н', 'o':'о', 'p':'п',
-            'q':'к', 'r':'р', 's':'с', 't':'т', 'u':'у', 'v':'в', 'w':'в', 'x':'кс',
-            'y':'и', 'z':'з'
-          };
-          return text.split('').map(char => map[char] || char).join('');
-        };
-
-        // Перевіряємо всі категорії
-        for (const category in data) {
-          // Перевіряємо всі продукти в категорії
-          for (const product of data[category]) {
-            const productName = product.name.toLowerCase();
-            
-            // Проста перевірка - чи містить назва продукту наш запит
-            if (productName.includes(query)) {
-              console.log("Знайдено:", product.name);
-              window.location.href = window.appConfig.getHeaderFooterPath(`pages/categoryPages/${category}.html`);
-              return;
-            }
-            
-            // Перевірка з транслітерацією
-            if (transliterate(productName).includes(query)) {
-              console.log("Знайдено (трансліт):", product.name);
-              window.location.href = window.appConfig.getHeaderFooterPath(`pages/categoryPages/${category}.html`);
-              return;
-            }
-          }
-        }
-
-        alert("Нічого не знайдено");
-      };
-
-      searchButton.addEventListener("click", performSearch);
-      searchInput.addEventListener("keypress", (e) => {
-        if (e.key === "Enter") performSearch();
-      });
-    })
-    .catch(error => console.error("Помилка:", error));
+            searchButton.addEventListener("click", performSearch);
+            searchInput.addEventListener("keypress", (e) => { if (e.key === "Enter") performSearch(); });
+        })
+        .catch(error => console.error("❌ Помилка при завантаженні JSON:", error));
 }
 // ==========================
 // Каталог
