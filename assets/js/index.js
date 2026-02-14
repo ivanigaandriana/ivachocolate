@@ -1,8 +1,6 @@
 function initSmartSearch() {
   // ВИПРАВЛЕНО: універсальний шлях до JSON
-  const jsonPath = window.appConfig.baseUrl 
-    ? window.appConfig.baseUrl + '/data/product.json' 
-    : window.appConfig.getHeaderFooterPath('data/product.json');
+const jsonPath = window.appConfig.getJsonPath();
 
   console.log('📦 Завантаження JSON з:', jsonPath);
 

@@ -98,8 +98,19 @@
                 // Render та локально - додаємо ../ відповідно до глибини
                 return '../'.repeat(depth) + relativePath;
             }
+        },
+         getJsonPath: function() {
+            const depth = this.getDepth();
+            const base = this.baseUrl;
+            
+            if (base) {
+                return base + '/data/product.json';
+            } else {
+                return '../'.repeat(depth) + 'data/product.json';
+            }
         }
-    };
+    }
+    
     
     // Додаємо глобальну функцію для зручності
     window.$path = function(relativePath) {
