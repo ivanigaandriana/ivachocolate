@@ -1,17 +1,25 @@
 function initSmartSearch() {
-  fetch("/data/product.json")
+
+  const base = getBasePath(); // беремо базовий шлях
+
+  fetch(`${base}/data/product.json`)
     .then(res => res.json())
     .then(data => {
+
       const searchInput = document.getElementById("search");
       const searchButton = document.getElementById("searchBtn");
       const resultsDiv = document.getElementById("results");
-       // 🔥 якщо елементів немає — просто виходимо
+
       if (!searchInput || !searchButton || !resultsDiv) {
         console.log("SmartSearch: елементи не знайдені на цій сторінці");
         return;
       }
 
-      searchButton.addEventListener("click", () => {
+      const buildCategoryLink = (category) => {
+        return `${base}/pages/categoryPages/${category}.html`;
+      };
+
+      const performSearch = () => {
         const query = searchInput.value.trim().toLowerCase();
 
         if (!query) {
@@ -20,14 +28,8 @@ function initSmartSearch() {
         }
 
         let found = false;
-        const currentPath = window.location.pathname;
-        const isInCategory = currentPath.includes("/categoryPages/");
 
-        const buildCategoryLink = (category) => {
-          return isInCategory ? `../categoryPages/${category}.html` : `./categoryPages/${category}.html`;
-        };
-
-        // 1. Пошук по категоріях
+        // 1️⃣ Пошук по категоріях
         for (const category in data) {
           if (category.toLowerCase().includes(query)) {
             window.location.href = buildCategoryLink(category);
@@ -36,10 +38,11 @@ function initSmartSearch() {
           }
         }
 
-        // 2. Пошук по товарах
+        // 2️⃣ Пошук по товарах
         if (!found) {
           for (const category in data) {
             for (const product of data[category]) {
+
               const name = product.name.toLowerCase();
               const description = product.description?.toLowerCase() || "";
 
@@ -53,16 +56,29 @@ function initSmartSearch() {
           }
         }
 
-        // 3. Якщо нічого не знайдено
+        // 3️⃣ Якщо нічого не знайдено
         if (!found) {
           resultsDiv.innerHTML = "<p>Нічого не знайдено. Спробуйте інший запит.</p>";
         }
+      };
+
+      // Клік по кнопці
+      searchButton.addEventListener("click", performSearch);
+
+      // 🔥 Пошук по Enter
+      searchInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          performSearch();
+        }
       });
+
     })
     .catch(error => {
       console.error("Помилка при завантаженні JSON:", error);
       const resultsDiv = document.getElementById("results");
-      resultsDiv.innerHTML = "<p>Не вдалося завантажити дані. Спробуйте пізніше.</p>";
+      if (resultsDiv) {
+        resultsDiv.innerHTML = "<p>Не вдалося завантажити дані. Спробуйте пізніше.</p>";
+      }
     });
 }
 

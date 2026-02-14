@@ -1,7 +1,18 @@
-function loadHeaderFooter() {
-    const repo = '/ivachocolate'; // обов’язково вказати назву репозиторію
+function getBasePath() {
+    const path = window.location.pathname;
 
-    fetch(`${repo}/pages/header.html`)
+    // якщо сайт відкритий як github.io/ivachocolate/
+    if (path.includes('/ivachocolate/')) {
+        return '/ivachocolate';
+    }
+
+    return '';
+}
+
+function loadHeaderFooter() {
+    const base = getBasePath();
+
+    fetch(`${base}/pages/header.html`)
       .then(res => {
           if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
           return res.text();
@@ -10,13 +21,13 @@ function loadHeaderFooter() {
           const headerContainer = document.getElementById("header-placeholder");
           if (headerContainer) {
               headerContainer.innerHTML = data;
-              initCart(); // якщо є
-              if (typeof updateTexts === "function") updateTexts(); // i18n
+              if (typeof initCart === "function") initCart();
+              if (typeof updateTexts === "function") updateTexts();
           }
       })
       .catch(err => console.error('Помилка завантаження header:', err));
 
-    fetch(`${repo}/pages/footer.html`)
+    fetch(`${base}/pages/footer.html`)
       .then(res => {
           if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
           return res.text();
@@ -29,11 +40,11 @@ function loadHeaderFooter() {
       })
       .catch(err => console.error('Помилка завантаження footer:', err))
       .finally(() => {
-          loadCatalog(); // якщо потрібна ініціалізація каталогу
+          if (typeof loadCatalog === "function") loadCatalog();
       });
 }
 
 document.addEventListener("DOMContentLoaded", function () {
     loadHeaderFooter();
-    initSmartSearch(); // якщо потрібен пошук
+    if (typeof initSmartSearch === "function") initSmartSearch();
 });
