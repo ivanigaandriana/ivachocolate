@@ -1,68 +1,82 @@
 function initSmartSearch() {
-  // ВИПРАВЛЕНО: універсальний шлях до JSON
-const jsonPath = window.appConfig.getJsonPath();
-
+  // універсальний шлях до JSON
+  const jsonPath = window.appConfig.getJsonPath();
   console.log('📦 Завантаження JSON з:', jsonPath);
 
   fetch(jsonPath)
     .then(res => {
-      if (!res.ok) throw new Error('Помилка завантаження');
+      if (!res.ok) throw new Error(`Помилка ${res.status} при завантаженні JSON`);
       return res.json();
     })
     .then(data => {
       const searchInput = document.getElementById("search");
       const searchButton = document.getElementById("searchBtn");
+      const resultsDiv = document.getElementById("results");
 
       if (!searchInput || !searchButton) return;
 
+      // транслітерація кирилиці → латиниця
+      const transliterate = (text) => {
+        const map = {
+          'а':'a','б':'b','в':'v','г':'g','д':'d','е':'e','є':'ye','ж':'zh',
+          'з':'z','и':'y','і':'i','ї':'yi','й':'y','к':'k','л':'l','м':'m',
+          'н':'n','о':'o','п':'p','р':'r','с':'s','т':'t','у':'u','ф':'f',
+          'х':'kh','ц':'ts','ч':'ch','ш':'sh','щ':'shch','ю':'yu','я':'ya'
+        };
+        return text.split('').map(c => map[c] || c).join('');
+      };
+
+      // перетворюємо категорію у slug для filename
+      const slugify = (text) =>
+        text.toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]+/g, '');
+
+      const getCategoryPath = (category) => {
+        const slug = slugify(category);
+        return window.appConfig.getPath(`pages/categoryPages/${slug}.html`);
+      };
+
       const performSearch = () => {
         const query = searchInput.value.trim().toLowerCase();
-        if (!query) return;
-
-        // Функція транслітерації
-        const transliterate = (text) => {
-          const map = {
-            'а':'a', 'б':'b', 'в':'v', 'г':'g', 'д':'d', 'е':'e', 'є':'ye', 'ж':'zh',
-            'з':'z', 'и':'y', 'і':'i', 'ї':'yi', 'й':'y', 'к':'k', 'л':'l', 'м':'m',
-            'н':'n', 'о':'o', 'п':'p', 'р':'r', 'с':'s', 'т':'t', 'у':'u', 'ф':'f',
-            'х':'kh', 'ц':'ts', 'ч':'ch', 'ш':'sh', 'щ':'shch', 'ю':'yu', 'я':'ya',
-            'a':'а', 'b':'б', 'c':'ц', 'd':'д', 'e':'е', 'f':'ф', 'g':'г', 'h':'х',
-            'i':'і', 'j':'й', 'k':'к', 'l':'л', 'm':'м', 'n':'н', 'o':'о', 'p':'п',
-            'q':'к', 'r':'р', 's':'с', 't':'т', 'u':'у', 'v':'в', 'w':'в', 'x':'кс',
-            'y':'и', 'z':'з'
-          };
-          return text.split('').map(char => map[char] || char).join('');
-        };
-
-        // ВИПРАВЛЕНО: універсальний шлях для редиректу
-        const getCategoryPath = (category) => {
-          return window.appConfig.baseUrl
-            ? window.appConfig.baseUrl + `/pages/categoryPages/${category}.html`
-            : window.appConfig.getHeaderFooterPath(`pages/categoryPages/${category}.html`);
-        };
-
-        // Перевіряємо всі категорії
-        for (const category in data) {
-          for (const product of data[category]) {
-            const productName = product.name.toLowerCase();
-            
-            if (productName.includes(query) || transliterate(productName).includes(query)) {
-              console.log("Знайдено:", product.name);
-              window.location.href = getCategoryPath(category);
-              return;
-            }
-          }
+        if (!query) {
+          if (resultsDiv) resultsDiv.innerHTML = "<p>Введіть запит для пошуку.</p>";
+          return;
         }
 
-        alert("Нічого не знайдено");
+        let found = false;
+
+        // пошук по категоріях і товарах
+        for (const category in data) {
+          if (category.toLowerCase().includes(query) || transliterate(category).includes(query)) {
+            window.location.href = getCategoryPath(category);
+            found = true;
+            break;
+          }
+          for (const product of data[category]) {
+            const name = product.name.toLowerCase();
+            const desc = product.description?.toLowerCase() || "";
+            if (name.includes(query) || transliterate(name).includes(query) || desc.includes(query)) {
+              window.location.href = getCategoryPath(category);
+              found = true;
+              break;
+            }
+          }
+          if (found) break;
+        }
+
+        if (!found && resultsDiv) {
+          resultsDiv.innerHTML = "<p>Нічого не знайдено. Спробуйте інший запит.</p>";
+        }
       };
 
       searchButton.addEventListener("click", performSearch);
-      searchInput.addEventListener("keypress", (e) => {
-        if (e.key === "Enter") performSearch();
-      });
+      searchInput.addEventListener("keypress", e => { if (e.key === "Enter") performSearch(); });
+
     })
-    .catch(error => console.error("Помилка:", error));
+    .catch(err => {
+      console.error("Помилка при завантаженні JSON:", err);
+      const resultsDiv = document.getElementById("results");
+      if (resultsDiv) resultsDiv.innerHTML = "<p>Не вдалося завантажити дані. Спробуйте пізніше.</p>";
+    });
 }
 // ==========================
 // Каталог
