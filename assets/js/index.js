@@ -36,7 +36,11 @@ function initSmartSearch() {
                         const productName = product.name.toLowerCase();
                         if (productName.includes(query) || transliterate(productName).includes(query)) {
                             console.log("🔎 Знайдено:", product.name);
-                            window.location.href = window.appConfig.getHeaderFooterPath(`pages/categoryPages/${category}.html`);
+                         // ✅ ВИПРАВЛЕНО: замінюємо пробіли на дефіси для імені файлу
+                            const categoryFileName = category.replace(/\s+/g, '-');
+                            console.log(`📁 Категорія: "${category}" → файл: "${categoryFileName}.html"`);
+                            
+                            window.location.href = window.appConfig.getHeaderFooterPath(`pages/categoryPages/${categoryFileName}.html`);
                             return;
                         }
                     }
