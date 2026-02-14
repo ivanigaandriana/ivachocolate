@@ -114,18 +114,22 @@ function initCart() {
   // ==========================
   // Checkout
   // ==========================
-  const checkoutBtn = document.querySelector(".checkout-btn");
-  if (checkoutBtn) {
-    checkoutBtn.addEventListener("click", () => {
-      if (window.cart.length === 0) {
-        alert("Ваш кошик порожній!");
-        return;
-      }
-      cartModal.style.display = "none";
-      window.location.href = "/pages/checkout.html";
-    });
-  }
-
+ const checkoutBtn = document.querySelector(".checkout-btn");
+if (checkoutBtn) {
+  checkoutBtn.addEventListener("click", () => {
+    if (window.cart.length === 0) {
+      alert("Ваш кошик порожній!");
+      return;
+    }
+    cartModal.style.display = "none";
+    
+    // ✅ ВИПРАВЛЕНО: використовуємо правильний шлях
+    const baseUrl = window.appConfig?.baseUrl || '';
+    const checkoutPath = baseUrl + '/pages/checkout.html';
+    console.log('📦 Перехід на checkout:', checkoutPath);
+    window.location.href = checkoutPath;
+  });
+}
   // ==========================
   // Події на + / - / видалення / add-to-cart
   // ==========================
