@@ -2,20 +2,36 @@ document.addEventListener("DOMContentLoaded", function () {
     const categoryElement = document.getElementById("category");
     const categoryName = categoryElement.getAttribute("data-category");
 
-    fetch('/data/product.json')
-        .then(response => response.json())
+    // 🔧 ДОДАНО: універсальний шлях до JSON
+    const baseUrl = window.location.hostname.includes('github.io') ? '/ivachocolate' : '';
+    const jsonUrl = baseUrl + '/data/product.json';
+    console.log('📦 Завантаження JSON з:', jsonUrl); // для перевірки
+
+    // 🔄 ЗМІНЕНО: використовуємо jsonUrl замість '/data/product.json'
+    fetch(jsonUrl)
+        .then(response => {
+            // 🔧 ДОДАНО: перевірка відповіді
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            return response.json();
+        })
         .then(data => {
             if (data[categoryName]) {
                 const products = data[categoryName];
                 const productList = document.querySelector(".product-list");
+                productList.innerHTML = ''; // очищаємо перед додаванням
 
                 products.forEach(product => {
                     const productItem = document.createElement("li");
                     productItem.classList.add("product-item");
 
+                    // 🔧 ДОДАНО: виправлення шляху до зображення
+                    const imageUrl = product.image.startsWith('/') 
+                        ? baseUrl + product.image 
+                        : product.image;
+
                     // Зображення
                     const productImage = document.createElement("img");
-                    productImage.src = product.image;
+                    productImage.src = imageUrl; // ← використовуємо виправлений шлях
                     productImage.alt = product.name;
                     productImage.width = 270;
                     productImage.classList.add("product-img");
@@ -37,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     // Посилання на деталі продукту
                     const productLink = document.createElement("a");
-                    productLink.href = `../productDetails.html?product=${product.name}`; // Параметр для відображення конкретного продукту
+                    productLink.href = `../productDetails.html?product=${encodeURIComponent(product.name)}`; // ← ДОДАНО encodeURIComponent
                     productLink.textContent = "Детальніше";
                     productLink.classList.add("product-link");
 
@@ -46,7 +62,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     productButton.classList.add("add-to-cart");
                     productButton.setAttribute("data-name", product.name);
                     productButton.setAttribute("data-price", product.price);
-                     productButton.setAttribute("data-image", product.image);
+                    productButton.setAttribute("data-image", imageUrl); // ← виправлений шлях
                     productButton.textContent = "🛒";
 
                     // Контейнер для кнопки та лінку
@@ -70,6 +86,8 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         })
         .catch(error => {
-            console.error("Помилка при завантаженні даних:", error);
+            console.error("❌ Помилка при завантаженні даних:", error);
+            document.querySelector(".product-list").innerHTML = 
+                `<p style="color: red; padding: 20px;">Помилка: ${error.message}</p>`;
         });
 });

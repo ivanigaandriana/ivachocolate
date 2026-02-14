@@ -333,9 +333,3 @@ function renderCustomBoxItemSafe(item, index) {
     </div>
   `;
 }
-// ======================= ЗАПУСК ПІСЛЯ ЗАВАНТАЖЕННЯ DOM =======================
-document.addEventListener("DOMContentLoaded", () => {
-    initSmartSearch();  // Пошук по JSON
-    loadCatalog();      // Каталог
-    initCart();         // Кошик
-});
