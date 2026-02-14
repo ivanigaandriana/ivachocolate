@@ -633,7 +633,12 @@ document.addEventListener("DOMContentLoaded", () => {
         window.cart = [];
         localStorage.removeItem("cart");
         renderCart();
-        window.location.replace("/");
+        // ✅ ВИПРАВЛЕНО: правильний шлях для GitHub Pages
+    const baseUrl = window.appConfig?.baseUrl || '';
+    const redirectUrl = baseUrl + '/index.html';
+    console.log('🔄 Перенаправлення на:', redirectUrl);
+    window.location.replace(redirectUrl);
+       
     }
 
     // -------------------------
