@@ -8,6 +8,7 @@ function initSmartSearch() {
             return res.json();
         })
         .then(data => {
+           console.log("✅ JSON завантажено:", data);
             const searchInput = document.getElementById("search");
             const searchButton = document.getElementById("searchBtn");
             if (!searchInput || !searchButton) return;
@@ -332,3 +333,9 @@ function renderCustomBoxItemSafe(item, index) {
     </div>
   `;
 }
+// ======================= ЗАПУСК ПІСЛЯ ЗАВАНТАЖЕННЯ DOM =======================
+document.addEventListener("DOMContentLoaded", () => {
+    initSmartSearch();  // Пошук по JSON
+    loadCatalog();      // Каталог
+    initCart();         // Кошик
+});
