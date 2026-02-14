@@ -1,8 +1,16 @@
 function initSmartSearch() {
-  const jsonPath = window.appConfig.getHeaderFooterPath('data/product.json');
+  // ВИПРАВЛЕНО: універсальний шлях до JSON
+  const jsonPath = window.appConfig.baseUrl 
+    ? window.appConfig.baseUrl + '/data/product.json' 
+    : window.appConfig.getHeaderFooterPath('data/product.json');
+
+  console.log('📦 Завантаження JSON з:', jsonPath);
 
   fetch(jsonPath)
-    .then(res => res.json())
+    .then(res => {
+      if (!res.ok) throw new Error('Помилка завантаження');
+      return res.json();
+    })
     .then(data => {
       const searchInput = document.getElementById("search");
       const searchButton = document.getElementById("searchBtn");
@@ -28,23 +36,21 @@ function initSmartSearch() {
           return text.split('').map(char => map[char] || char).join('');
         };
 
+        // ВИПРАВЛЕНО: універсальний шлях для редиректу
+        const getCategoryPath = (category) => {
+          return window.appConfig.baseUrl
+            ? window.appConfig.baseUrl + `/pages/categoryPages/${category}.html`
+            : window.appConfig.getHeaderFooterPath(`pages/categoryPages/${category}.html`);
+        };
+
         // Перевіряємо всі категорії
         for (const category in data) {
-          // Перевіряємо всі продукти в категорії
           for (const product of data[category]) {
             const productName = product.name.toLowerCase();
             
-            // Проста перевірка - чи містить назва продукту наш запит
-            if (productName.includes(query)) {
+            if (productName.includes(query) || transliterate(productName).includes(query)) {
               console.log("Знайдено:", product.name);
-              window.location.href = window.appConfig.getHeaderFooterPath(`pages/categoryPages/${category}.html`);
-              return;
-            }
-            
-            // Перевірка з транслітерацією
-            if (transliterate(productName).includes(query)) {
-              console.log("Знайдено (трансліт):", product.name);
-              window.location.href = window.appConfig.getHeaderFooterPath(`pages/categoryPages/${category}.html`);
+              window.location.href = getCategoryPath(category);
               return;
             }
           }
