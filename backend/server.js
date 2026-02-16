@@ -21,8 +21,11 @@ const __dirname = path.dirname(__filename);
 const app = express();
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+// 🔧 ДОДАНО: перевірка шляху до public
+const publicPath = path.join(__dirname, 'public');
+console.log('📁 Public path:', publicPath);
 // Віддаємо всі публічні файли
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(publicPath));
 app.use(session({
   secret: process.env.SESSION_SECRET || 'mysecretkey',
   resave: false,
@@ -390,9 +393,7 @@ async function sendPlainText(botToken, chatId, order) {
 // -------------------------
 // Маршрути
 // -------------------------
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'index.html')); // ← ../ піднімаємось на рівень вище
-});
+app.get('/', (req, res) => res.json({ message: '✅ Backend працює!' }));
 app.get('/api/health', (req, res) => res.json({ status: 'OK', time: new Date().toISOString(), uptime: Math.floor(process.uptime()) + ' секунд' }));
 app.get('/api/orders', (req, res) => res.json({ success: true, count: orders.length, orders: [...orders].reverse() }));
 
@@ -549,7 +550,7 @@ const emailResult = await sendOrderEmail(newOrder, invoicePath);
 // -------------------------
 (async () => {
   orders = await loadOrdersFromFiles();
-  app.listen(PORT, () => console.log(`🚀 Сервер на порту ${PORT}`));
+ app.listen(PORT, '0.0.0.0', () => console.log(`🚀 Сервер на порту ${PORT}`));
 })();
 // PATCH /api/orders/:id/status
 app.patch('/api/orders/:id/status', async (req, res) => {
