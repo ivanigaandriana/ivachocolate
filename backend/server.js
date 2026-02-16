@@ -390,7 +390,9 @@ async function sendPlainText(botToken, chatId, order) {
 // -------------------------
 // Маршрути
 // -------------------------
-app.get('/', (req, res) => res.json({ message: '✅ Backend працює!' }));
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 app.get('/api/health', (req, res) => res.json({ status: 'OK', time: new Date().toISOString(), uptime: Math.floor(process.uptime()) + ' секунд' }));
 app.get('/api/orders', (req, res) => res.json({ success: true, count: orders.length, orders: [...orders].reverse() }));
 
